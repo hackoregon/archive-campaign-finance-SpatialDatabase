@@ -24,7 +24,8 @@ for i in \
   unified_school_districts \
   state_legislature_lower_districts \
   state_legislature_upper_districts \
-  orestar
+  orestar \
+  voterreg
 do
   sudo su - postgres -c "dropdb ${i}"
 done
@@ -43,7 +44,8 @@ for i in \
   unified_school_districts \
   state_legislature_lower_districts \
   state_legislature_upper_districts \
-  orestar
+  orestar \
+  voterreg
 do
   sudo su - postgres -c "createdb -O ${PGUSER} ${i}"
   sudo ${HERE}/create-postgis.bash ${i}
