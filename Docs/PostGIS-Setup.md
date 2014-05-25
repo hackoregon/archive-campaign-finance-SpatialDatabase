@@ -1,14 +1,16 @@
 ---
 title: "PostGIS Setup Instructions"
-author: M. Edward (Ed) Borasky
+author: "M. Edward (Ed) Borasky"
 date: May 25, 2014
-output: 
+output:
   html_document:
-    toc: true
-    toc_level: 2
+    self_contained: true
     theme: readable
-    highlight: default
+    highlight: textmate
     smart: false
+    mathjax: null
+    toc: true
+    toc_depth: 2
 ---
 
 The current setup is for [Fedora Linux 20](https://fedoraproject.org/), which is what I run most of the time. I do have a Windows laptop and will be porting this setup to it as part of the Hack Oregon project. I'm looking for a Mac user to port this to Macintosh laptops. If you use another Linux distro on your desktop, open an issue on Github and I'll do the port for you.
@@ -23,7 +25,16 @@ When PostgreSQL is installed and configured, there will be a 'postgres' Linux us
 ./1yum-install-dependencies.bash
 ```
 
-This will install [PostgreSQL](http://www.postgresql.org/), [pgAdmin](http://www.pgadmin.org/index.php), [PostGIS](http://postgis.net/), [QGIS](http://www.qgis.org/en/site/) and some [OpenStreetMap](www.openstreetmap.org/) tools, plus any dependencies. You only have to run this once. It won't hurt anything if you run it again.
+This will install 
+
+* [PostgreSQL](http://www.postgresql.org/),
+* [pgAdmin](http://www.pgadmin.org/index.php),
+* [PostGIS](http://postgis.net/),
+* [QGIS](http://www.qgis.org/en/site/),
+* some [OpenStreetMap](www.openstreetmap.org/) tools, and
+* any dependencies.
+
+You only have to run this once. It won't hurt anything if you run it again.
 
 ## Configure PostgreSQL
 
@@ -31,7 +42,14 @@ This will install [PostgreSQL](http://www.postgresql.org/), [pgAdmin](http://www
 ./2configure-postgresql.bash
 ```
 
-This creates the PostgreSQL data area on the hard drive, enables the PostgreSQL server to start at boot time, starts it and installs the 'adminpack' and 'plpgsql' extensions. It will ask you to create a password for the PostgreSQL 'superuser' role, named 'postgres'. You only have to run this once, but it won't hurt anything if you run it again.
+This script
+
+* creates the PostgreSQL data area on the hard drive,
+* enables the PostgreSQL server to start at boot time,
+* starts the PostgreSQL server, and
+* installs the 'adminpack' and 'plpgsql' extensions.
+
+The script will ask you to create a password for the PostgreSQL 'superuser' role, named 'postgres'. You only have to run this once, but it won't hurt anything if you run it again.
 
 ## Set up the PostGIS databases
 
