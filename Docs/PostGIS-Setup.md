@@ -5,7 +5,7 @@ date: May 25, 2014
 output:
   html_document:
     self_contained: true
-    theme: readable
+    theme: spacelab
     highlight: textmate
     smart: false
     mathjax: null
@@ -15,13 +15,13 @@ output:
 
 The current setup is for [Fedora Linux 20](https://fedoraproject.org/), which is what I run most of the time. I do have a Windows laptop and will be porting this setup to it as part of the Hack Oregon project. I'm looking for a Mac user to port this to Macintosh laptops. If you use another Linux distro on your desktop, open an issue on Github and I'll do the port for you.
 
-Note that with PostgreSQL on Linux, there are two sets of users, Linux users and PostgreSQL database users. And PostgreSQL database users are called 'roles' in PostgreSQL jargon. For most Linux desktop installations, things are easier if they are mapped one-to-one. That is, the PostgreSQL role 'znmeb' is the same person as the Linux user 'znmeb'.
+***Important note***: in PostgreSQL on Linux, there are two sets of users, Linux users and PostgreSQL database users. And PostgreSQL database users are called ***roles*** in PostgreSQL jargon. For most Linux desktop installations, things are easier if they are mapped one-to-one. That is, the PostgreSQL role 'znmeb' is the same person as the Linux user 'znmeb'.
 
-When PostgreSQL is installed and configured, there will be a 'postgres' Linux user. And there will be a 'postgres' database role (user) inside the PostgreSQL database. The 'postgres' database role has 'superuser' powers - it can create other roles and in general mess with stuff inside PostgreSQL just like 'root' can on a Linux system.
+When PostgreSQL is installed and configured, there will be a 'postgres' Linux user. And there will be a 'postgres' database role (user) inside the PostgreSQL database. The 'postgres' database role has 'superuser' powers - it can create other roles and in general mess with stuff inside PostgreSQL just like 'root' can on a Linux system. So for practical usage you'll ususally want to create a non-superuser role for day-to-day work.
 
 ## Install the Linux packages
 
-```
+```bash
 ./1yum-install-dependencies.bash
 ```
 
@@ -38,7 +38,7 @@ You only have to run this once. It won't hurt anything if you run it again.
 
 ## Configure PostgreSQL
 
-```
+```bash
 ./2configure-postgresql.bash
 ```
 
@@ -49,15 +49,15 @@ This script
 * starts the PostgreSQL server, and
 * installs the 'adminpack' and 'plpgsql' extensions.
 
-The script will ask you to create a password for the PostgreSQL 'superuser' role, named 'postgres'. You only have to run this once, but it won't hurt anything if you run it again.
+The script will ask you to create a password for the PostgreSQL 'superuser' role, named 'postgres'. You only have to run this script once, but it won't hurt anything if you run it again.
 
 ## Set up the PostGIS databases
 
-```
+```bash
 ./3set-up-postgis.bash
 ```
 
-This will create a _non-superuser_ PostgreSQL role with the same name as your Fedora Linux login. If the role exists already, it will be deleted and recreated. Then the script will create the following empty databases for that user:
+This will create a ***non-superuser*** PostgreSQL role with the same name as your Fedora Linux login. If the role exists already, it will be deleted and recreated. Then the script will create the following empty databases for that user:
 
 * congress_districts: US Congressional districts for the whole USA
 * state_legislature_upper_districts: Oregon State Senate districts
@@ -67,10 +67,11 @@ This will create a _non-superuser_ PostgreSQL role with the same name as your Fe
 * secondary_school_districts: Secondary school districts for Oregon
 * geocoder: A database for the TIGER geocoding / reverse geocoding package
 * orestar: A database for the ORESTAR data
+* voterreg: A database for the voter registration database
 
 ## Download the district shapefiles
 
-```
+```bash
 ./4download-tiger-districts.bash
 ```
 
@@ -84,7 +85,7 @@ This is a three-step process. For more details, see [_PostGIS in Action, Second 
 
 ### Create the download scripts.
 
-```
+```bash
 ./5make-geocoder-download-scripts.bash
 ```
 
@@ -92,25 +93,29 @@ This executes some code in the PostGIS package to create two scripts in `/gisdat
 
 ### Edit the download scripts.
 
-```
+```bash
 sudo su - postgres
 cd /gisdata
 ```
 
-This puts you into the PostgreSQL _Linux_ maintenance account. The scripts require this 'superuser' privilege to run. Edit the two 'bash' scripts to set the ***PostgreSQL*** password for the 'postgres' role - you should have set this in the second step. You'll see a line
+This puts you into the PostgreSQL ***Linux*** maintenance account. The scripts require this 'superuser' privilege to run. Edit the two 'bash' scripts to set the ***PostgreSQL*** password for the 'postgres' role - you should have set this password in the 'Configure PostgreSQL' step. You'll see a line
 
-```
+```bash
 export PGPASSWORD=yourpasswordhere
 ```
 
 Change all instances of 'yourpasswordhere' to the PostgreSQL password for the 'postgres' role. Notes:
 	
 * There may be more than one instance; you need to change all of them.
-* If your password contains special characters, you'll need to enclose it in single quotes. For example, `export PGPASSWORD='duck,duck:g00s3'`.
+* If your password contains special characters, you'll need to enclose it in single quotes. For example,
+
+```
+export PGPASSWORD='duck,duck:g00s3'
+```
 
 ### Run the download scripts.
 
-```
+```bash
 ./state-county.bash
 ./oregon.bash
 ```
