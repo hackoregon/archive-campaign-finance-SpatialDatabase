@@ -1,0 +1,5 @@
+[qgis]
+name=QGIS Repo
+baseurl=http://fedora.vitu.ch/QGIS/$releasever/$basearch
+enabled=1
+gpgcheck=0
