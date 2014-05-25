@@ -5,7 +5,7 @@ date: May 25, 2014
 output:
   html_document:
     self_contained: true
-    theme: readable
+    theme: spacelab
     highlight: textmate
     smart: false
     mathjax: null
