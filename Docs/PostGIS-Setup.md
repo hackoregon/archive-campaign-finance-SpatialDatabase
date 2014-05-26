@@ -77,7 +77,7 @@ This will create a ***non-superuser*** PostgreSQL role with the same name as you
 
 This will download the shapefiles (except for the 'geocoder' data) required to populate the databases from the [US Census Bureau's TIGER/Line® FTP site](http://www.census.gov/geo/maps-data/data/tiger-line.html). The first time you run it, it will take longer because it's downloading, but subsequent runs will only download if the file has changed on the FTP site.
 
-After the download, the script unpacks the ZIP archives and imports them into the databases.
+After the download, the script unpacks the ZIP archives and imports them into the databases. You can ignore the ERROR messages this script generates.
 
 ## Download the TIGER geocoder data.
 
@@ -121,3 +121,18 @@ export PGPASSWORD='duck,duck:g00s3'
 ```
 
 Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER FTP site. Later ones will only download changed ZIP archives.
+
+## Loading the ORESTAR database
+
+This step is optional - so far we don't have any spatial use cases for this database. But if you want to explore it, here's how:
+
+1. Get a copy of the file 'hackoregon.sql.bz2'.
+1. In a terminal, type
+
+```bash
+bunzip2 hackoregon.sql.bz2
+sudo su - postgres
+psql -d orestar < /path/to/hackoregon.sql
+```
+
+The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.
