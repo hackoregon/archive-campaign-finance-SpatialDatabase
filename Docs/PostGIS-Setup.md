@@ -136,3 +136,16 @@ psql -d orestar < /path/to/hackoregon.sql
 ```
 
 The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.
+
+## Loading the district precinct detail database
+
+This step is optional. I think this will be useful for the project, especially Ballot Path, but we need some documentation on what the data means.
+
+1. Get a copy of the directory 'voter_reg'.
+1. In a terminal, type
+
+```bash
+./create-district-precinct-detail.bash /path/to/voter_reg
+```
+
+The script will unzip the input file, clean it up, create the 'district_precinct_detail' table in the 'voterreg' database and copy the data into the table.
