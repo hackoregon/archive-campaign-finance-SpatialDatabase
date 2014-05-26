@@ -9,7 +9,7 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-unzip -c ${1}/voter_reg/Ex-DistrictPrecinctDetail.zip \
+unzip -c ${1}/Ex-DistrictPrecinctDetail.zip \
   | tail -n +4 \
   | sed 's/[ \t]*$//' \
   | grep -v -e '^[ \t]*$' \
