@@ -56,7 +56,7 @@ This will create a ***non-superuser*** PostgreSQL role with the same name as you
 * unified_school_districts: Unified school districts for Oregon
 * elementary_school_districts: Elementary school districts for Oregon
 * secondary_school_districts: Secondary school districts for Oregon
-* geocoder: A database for the TIGER geocoding / reverse geocoding package
+* geocoder: A database for the TIGER/Line® geocoding / reverse geocoding package
 * orestar: A database for the ORESTAR data
 * voterreg: A database for the voter registration database
 
@@ -70,7 +70,7 @@ This will download the shapefiles (except for the 'geocoder' data) required to p
 
 After the download, the script unpacks the ZIP archives and imports them into the databases. You can ignore the ERROR messages this script generates.
 
-## Download the TIGER geocoder data.
+## Download the TIGER/Line® geocoder data.
 
 This is a three-step process. For more details, see [_PostGIS in Action, Second Edition_](http://www.manning.com/obe2/).
 
@@ -111,9 +111,9 @@ export PGPASSWORD='duck,duck:g00s3'
 ./oregon.bash
 ```
 
-Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER FTP site. Later ones will only download changed ZIP archives.
+Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER/Line® FTP site. Later ones will only download changed ZIP archives.
 
-## Loading the ORESTAR database
+## Loading the ORESTAR database (optional)
 
 This step is optional - so far we don't have any spatial use cases for this database. But if you want to explore it, here's how:
 
@@ -127,7 +127,7 @@ bzip2 -dc /path/to/hackoregon.sql.bz2 | psql -d orestar
 
 The contents of the database dump file will be restored to the 'orestar' database.
 
-## Loading the district precinct detail database
+## Loading the district precinct detail database (optional)
 
 This step is optional. I think this will be useful for the project, especially Ballot Path, but we need some documentation on what the data means.
 

@@ -5,4 +5,4 @@ html_document:
   smart: false
   mathjax: null
   toc: true
-  toc_depth: 2
+  toc_depth: 3
