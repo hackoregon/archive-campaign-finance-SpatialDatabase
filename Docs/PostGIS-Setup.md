@@ -2,15 +2,6 @@
 title: "PostGIS Setup Instructions"
 author: "M. Edward (Ed) Borasky"
 date: May 25, 2014
-output:
-  html_document:
-    self_contained: true
-    theme: spacelab
-    highlight: textmate
-    smart: false
-    mathjax: null
-    toc: true
-    toc_depth: 2
 ---
 
 The current setup is for [Fedora Linux 20](https://fedoraproject.org/), which is what I run most of the time. I do have a Windows laptop and will be porting this setup to it as part of the Hack Oregon project. I'm looking for a Mac user to port this to Macintosh laptops. If you use another Linux distro on your desktop, open an issue on Github and I'll do the port for you.

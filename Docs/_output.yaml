@@ -1,0 +1,8 @@
+html_document:
+  self_contained: true
+  theme: spacelab
+  highlight: textmate
+  smart: false
+  mathjax: null
+  toc: true
+  toc_depth: 2
