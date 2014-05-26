@@ -150,10 +150,9 @@ cd /gisdata</code></pre>
 <li>Get a copy of the file 'hackoregon.sql.bz2'.</li>
 <li>In a terminal, type</li>
 </ol>
-<pre class="bash"><code>bunzip2 hackoregon.sql.bz2
-sudo su - postgres
-psql -d orestar &lt; /path/to/hackoregon.sql</code></pre>
-<p>The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.</p>
+<pre class="bash"><code>sudo su - postgres
+bzip2 -dc /path/to/hackoregon.sql.bz2 | psql -d orestar</code></pre>
+<p>The contents of the database dump file will be restored to the 'orestar' database.</p>
 </div>
 <div id="loading-the-district-precinct-detail-database" class="section level2">
 <h2>Loading the district precinct detail database</h2>

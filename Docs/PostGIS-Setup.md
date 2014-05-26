@@ -130,12 +130,11 @@ This step is optional - so far we don't have any spatial use cases for this data
 1. In a terminal, type
 
 ```bash
-bunzip2 hackoregon.sql.bz2
 sudo su - postgres
-psql -d orestar < /path/to/hackoregon.sql
+bzip2 -dc /path/to/hackoregon.sql.bz2 | psql -d orestar
 ```
 
-The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.
+The contents of the database dump file will be restored to the 'orestar' database.
 
 ## Loading the district precinct detail database
 
