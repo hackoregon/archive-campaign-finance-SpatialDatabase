@@ -59,6 +59,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li><a href="#set-up-the-postgis-databases">Set up the PostGIS databases</a></li>
 <li><a href="#download-the-district-shapefiles">Download the district shapefiles</a></li>
 <li><a href="#download-the-tiger-geocoder-data.">Download the TIGER geocoder data.</a></li>
+<li><a href="#loading-the-orestar-database">Loading the ORESTAR database</a></li>
 </ul>
 </div>
 
@@ -111,7 +112,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <h2>Download the district shapefiles</h2>
 <pre class="bash"><code>./4download-tiger-districts.bash</code></pre>
 <p>This will download the shapefiles (except for the 'geocoder' data) required to populate the databases from the <a href="http://www.census.gov/geo/maps-data/data/tiger-line.html">US Census Bureau's TIGER/Line® FTP site</a>. The first time you run it, it will take longer because it's downloading, but subsequent runs will only download if the file has changed on the FTP site.</p>
-<p>After the download, the script unpacks the ZIP archives and imports them into the databases.</p>
+<p>After the download, the script unpacks the ZIP archives and imports them into the databases. You can ignore the ERROR messages this script generates.</p>
 </div>
 <div id="download-the-tiger-geocoder-data." class="section level2">
 <h2>Download the TIGER geocoder data.</h2>
@@ -140,6 +141,18 @@ cd /gisdata</code></pre>
 ./oregon.bash</code></pre>
 <p>Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER FTP site. Later ones will only download changed ZIP archives.</p>
 </div>
+</div>
+<div id="loading-the-orestar-database" class="section level2">
+<h2>Loading the ORESTAR database</h2>
+<p>This step is optional - so far we don't have any use cases for this database. But if you want to explore it, here's how:</p>
+<ol style="list-style-type: decimal">
+<li>Get a copy of the file 'hackoregon.sql.bz2'.</li>
+<li>In a terminal, type</li>
+</ol>
+<pre class="bash"><code>bunzip2 hackoregon.sql.bz2
+sudo su - postgres
+psql -d orestar &lt; /path/to/hackoregon.sql</code></pre>
+<p>The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.</p>
 </div>
 
 
