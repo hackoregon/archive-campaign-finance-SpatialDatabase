@@ -58,9 +58,13 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li><a href="#configure-postgresql">Configure PostgreSQL</a></li>
 <li><a href="#set-up-the-postgis-databases">Set up the PostGIS databases</a></li>
 <li><a href="#download-the-district-shapefiles">Download the district shapefiles</a></li>
-<li><a href="#download-the-tiger-geocoder-data.">Download the TIGER geocoder data.</a></li>
-<li><a href="#loading-the-orestar-database">Loading the ORESTAR database</a></li>
-<li><a href="#loading-the-district-precinct-detail-database">Loading the district precinct detail database</a></li>
+<li><a href="#download-the-tigerline-geocoder-data.">Download the TIGER/Line® geocoder data.</a><ul>
+<li><a href="#create-the-download-scripts.">Create the download scripts.</a></li>
+<li><a href="#edit-the-download-scripts.">Edit the download scripts.</a></li>
+<li><a href="#run-the-download-scripts.">Run the download scripts.</a></li>
+</ul></li>
+<li><a href="#loading-the-orestar-database-optional">Loading the ORESTAR database (optional)</a></li>
+<li><a href="#loading-the-district-precinct-detail-database-optional">Loading the district precinct detail database (optional)</a></li>
 </ul>
 </div>
 
@@ -104,7 +108,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li>unified_school_districts: Unified school districts for Oregon</li>
 <li>elementary_school_districts: Elementary school districts for Oregon</li>
 <li>secondary_school_districts: Secondary school districts for Oregon</li>
-<li>geocoder: A database for the TIGER geocoding / reverse geocoding package</li>
+<li>geocoder: A database for the TIGER/Line® geocoding / reverse geocoding package</li>
 <li>orestar: A database for the ORESTAR data</li>
 <li>voterreg: A database for the voter registration database</li>
 </ul>
@@ -115,8 +119,8 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <p>This will download the shapefiles (except for the 'geocoder' data) required to populate the databases from the <a href="http://www.census.gov/geo/maps-data/data/tiger-line.html">US Census Bureau's TIGER/Line® FTP site</a>. The first time you run it, it will take longer because it's downloading, but subsequent runs will only download if the file has changed on the FTP site.</p>
 <p>After the download, the script unpacks the ZIP archives and imports them into the databases. You can ignore the ERROR messages this script generates.</p>
 </div>
-<div id="download-the-tiger-geocoder-data." class="section level2">
-<h2>Download the TIGER geocoder data.</h2>
+<div id="download-the-tigerline-geocoder-data." class="section level2">
+<h2>Download the TIGER/Line® geocoder data.</h2>
 <p>This is a three-step process. For more details, see <a href="http://www.manning.com/obe2/"><em>PostGIS in Action, Second Edition</em></a>.</p>
 <div id="create-the-download-scripts." class="section level3">
 <h3>Create the download scripts.</h3>
@@ -140,11 +144,11 @@ cd /gisdata</code></pre>
 <h3>Run the download scripts.</h3>
 <pre class="bash"><code>./state-county.bash
 ./oregon.bash</code></pre>
-<p>Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER FTP site. Later ones will only download changed ZIP archives.</p>
+<p>Like the previous download script, they will run longer the first time while downloading the raw data from the TIGER/Line® FTP site. Later ones will only download changed ZIP archives.</p>
 </div>
 </div>
-<div id="loading-the-orestar-database" class="section level2">
-<h2>Loading the ORESTAR database</h2>
+<div id="loading-the-orestar-database-optional" class="section level2">
+<h2>Loading the ORESTAR database (optional)</h2>
 <p>This step is optional - so far we don't have any spatial use cases for this database. But if you want to explore it, here's how:</p>
 <ol style="list-style-type: decimal">
 <li>Get a copy of the file 'hackoregon.sql.bz2'.</li>
@@ -154,8 +158,8 @@ cd /gisdata</code></pre>
 bzip2 -dc /path/to/hackoregon.sql.bz2 | psql -d orestar</code></pre>
 <p>The contents of the database dump file will be restored to the 'orestar' database.</p>
 </div>
-<div id="loading-the-district-precinct-detail-database" class="section level2">
-<h2>Loading the district precinct detail database</h2>
+<div id="loading-the-district-precinct-detail-database-optional" class="section level2">
+<h2>Loading the district precinct detail database (optional)</h2>
 <p>This step is optional. I think this will be useful for the project, especially Ballot Path, but we need some documentation on what the data means.</p>
 <ol style="list-style-type: decimal">
 <li>Get a copy of the directory 'voter_reg'.</li>
