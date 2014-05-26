@@ -14,3 +14,6 @@ unzip -c /data/HackOregon/voter_reg/Ex-DistrictPrecinctDetail.zip \
   | sed 's/[ \t]*$//' \
   | grep -v -e '^[ \t]*$' \
   > district-precinct-detail.txt
+sudo mv district-precinct-detail.txt /gisdata
+sudo cp create-district-precinct-detail.sql /gisdata
+sudo chown -R postgres:postgres /gisdata
