@@ -60,6 +60,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 <li><a href="#download-the-district-shapefiles">Download the district shapefiles</a></li>
 <li><a href="#download-the-tiger-geocoder-data.">Download the TIGER geocoder data.</a></li>
 <li><a href="#loading-the-orestar-database">Loading the ORESTAR database</a></li>
+<li><a href="#loading-the-district-precinct-detail-database">Loading the district precinct detail database</a></li>
 </ul>
 </div>
 
@@ -144,7 +145,7 @@ cd /gisdata</code></pre>
 </div>
 <div id="loading-the-orestar-database" class="section level2">
 <h2>Loading the ORESTAR database</h2>
-<p>This step is optional - so far we don't have any use cases for this database. But if you want to explore it, here's how:</p>
+<p>This step is optional - so far we don't have any spatial use cases for this database. But if you want to explore it, here's how:</p>
 <ol style="list-style-type: decimal">
 <li>Get a copy of the file 'hackoregon.sql.bz2'.</li>
 <li>In a terminal, type</li>
@@ -153,6 +154,16 @@ cd /gisdata</code></pre>
 sudo su - postgres
 psql -d orestar &lt; /path/to/hackoregon.sql</code></pre>
 <p>The 'bunzip2' command will decompress the file, leaving a file 'hackoregon.sql'. The 'psql' command restores the contents to the 'orestar' database.</p>
+</div>
+<div id="loading-the-district-precinct-detail-database" class="section level2">
+<h2>Loading the district precinct detail database</h2>
+<p>This step is optional. I think this will be useful for the project, especially Ballot Path, but we need some documentation on what the data means.</p>
+<ol style="list-style-type: decimal">
+<li>Get a copy of the directory 'voter_reg'.</li>
+<li>In a terminal, type</li>
+</ol>
+<pre class="bash"><code>./create-district-precinct-detail.bash /path/to/voter_reg</code></pre>
+<p>The script will unzip the input file, clean it up, create the 'district_precinct_detail' table in the 'voterreg' database and copy the data into the table.</p>
 </div>
 
 
