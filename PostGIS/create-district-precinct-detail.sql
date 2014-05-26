@@ -1,6 +1,6 @@
 ﻿-- Table: district_precinct_detail
 
--- DROP TABLE district_precinct_detail;
+DROP TABLE district_precinct_detail;
 
 CREATE TABLE district_precinct_detail
 (
@@ -16,4 +16,4 @@ WITH (
   OIDS=FALSE
 );
 ALTER TABLE district_precinct_detail
-  OWNER TO znmeb;
+  OWNER TO NEWOWNER;

@@ -9,11 +9,13 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-unzip -c /data/HackOregon/voter_reg/Ex-DistrictPrecinctDetail.zip \
+unzip -c ${1}/voter_reg/Ex-DistrictPrecinctDetail.zip \
   | tail -n +4 \
   | sed 's/[ \t]*$//' \
   | grep -v -e '^[ \t]*$' \
   > district-precinct-detail.txt
 sudo mv district-precinct-detail.txt /gisdata
-sudo cp create-district-precinct-detail.sql /gisdata
 sudo chown -R postgres:postgres /gisdata
+sed "s/NEWOWNER/${USER}/" create-district-precinct-detail.sql | psql -d voterreg
+psql -d voterreg -c \
+  "\copy district_precinct_detail from '/gisdata/district-precinct-detail.txt' with ( FORMAT text )"
