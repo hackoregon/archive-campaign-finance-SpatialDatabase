@@ -1,9 +1,5 @@
----
-title: "SpatialDatabase Documentation"
-author: "M. Edward (Ed) Borasky"
-date: May 25, 2014
----
-
 Spatial database tools for Hack Oregon
 
-1. [PostGIS Setup Instructions](PostGIS-Setup.html)
+1.  [Windows Setup
+    Instructions](https://github.com/hackoregon/SpatialDatabase/blob/master/Docs/Windows-Setup.md)
+2.  [Fedora Linux Setup Instructions]()
