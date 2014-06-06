@@ -1,0 +1,2 @@
+CREATE EXTENSION adminpack;
+CREATE EXTENSION plpgsql WITH SCHEMA pg_catalog;
