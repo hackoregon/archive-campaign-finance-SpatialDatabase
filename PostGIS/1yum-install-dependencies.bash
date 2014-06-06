@@ -26,7 +26,6 @@ sudo yum install -y \
   qgis-python \
   josm \
   merkaartor \
-  osm-gps-map \
   osm2pgsql \
   osm-gps-map \
   readosm \
