@@ -5,3 +5,5 @@ CREATE ROLE znmeb
 \password znmeb
 CREATE DATABASE znmeb
   WITH OWNER znmeb;
+CREATE DATABASE geocoder
+  WITH OWNER postgres
