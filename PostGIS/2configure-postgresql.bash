@@ -22,17 +22,18 @@ sudo patch -N -b /var/lib/pgsql/data/pg_hba.conf pg_hba.conf.patch
 sudo systemctl restart postgresql # restart the server
 
 # install default extensions - will ERROR harmlessly if they're already there
-psql -d postgres -U postgres -f create-default-extensions.psql
-
 # set up non-superuser
 echo "Creating a non-superuser database user ${USER}"
-echo "You will be asked to create a database password for the new user"
-sed "s/znmeb/${USER}/g" create-user.psql \
+sed "s/znmeb/${USER}/g" 01create-default-extensions-and-user.sql \
   | psql -d postgres -U postgres
 
+# set the user's password
+echo "Creating a database password for 'postgres', the PostgreSQL superuser"
+psql -U postgres -d postgres -c "\password ${USER}"
+
 # create PostGIS extensions in ${USER} and voter_reg databases
-psql -d ${USER} -U postgres -f create-postgis-extensions.psql
-psql -d voter_reg -U postgres -f create-postgis-extensions.psql
+psql -d ${USER} -U postgres -f create-postgis-extensions.sql
+psql -d voter_reg -U postgres -f create-postgis-extensions.sql
 
 # create TIGER geocoding / reverse geocoding extensions in 'geocoder' database
-psql -d geocoder -U postgres -f create-geocoder-extensions.psql
+psql -d geocoder -U postgres -f create-geocoder-extensions.sql
