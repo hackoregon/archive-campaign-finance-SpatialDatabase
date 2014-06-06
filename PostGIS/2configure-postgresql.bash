@@ -26,14 +26,3 @@ sudo systemctl restart postgresql # restart the server
 echo "Creating a non-superuser database user ${USER}"
 sed "s/znmeb/${USER}/g" 01create-default-extensions-and-user.sql \
   | psql -d postgres -U postgres
-
-# set the user's password
-echo "Creating a database password for 'postgres', the PostgreSQL superuser"
-psql -U postgres -d postgres -c "\password ${USER}"
-
-# create PostGIS extensions in ${USER} and voter_reg databases
-psql -d ${USER} -U postgres -f create-postgis-extensions.sql
-psql -d voter_reg -U postgres -f create-postgis-extensions.sql
-
-# create TIGER geocoding / reverse geocoding extensions in 'geocoder' database
-psql -d geocoder -U postgres -f create-geocoder-extensions.sql
