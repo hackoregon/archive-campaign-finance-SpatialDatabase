@@ -28,5 +28,8 @@ psql -d postgres -U postgres -f create-default-extensions.psql
 sed "s/znmeb/${USER}/g" configure-postgresql.psql \
   | psql -d postgres -U postgres
 
-# create PostGIS extensions
+# create PostGIS extensions in ${USER} database
 psql -d ${USER} -U postgres -f create-postgis-extensions.psql
+
+# create TIGER geocoding / reverse geocoding extensions in 'geocoder' database
+psql -d postgres -U postgres -f create-geocoder-extensions.psql
