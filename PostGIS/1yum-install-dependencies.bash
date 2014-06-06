@@ -12,6 +12,7 @@
 sudo cp qgis.repo /etc/yum.repos.d # latest QGIS packages live here
 sudo yum update -y
 sudo yum install -y \
+  patch \
   postgis \
   postgis-docs \
   postgis-utils \
