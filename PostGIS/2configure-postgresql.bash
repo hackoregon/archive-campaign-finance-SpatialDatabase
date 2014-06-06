@@ -30,8 +30,9 @@ echo "You will be asked to create a database password for the new user"
 sed "s/znmeb/${USER}/g" create-user.psql \
   | psql -d postgres -U postgres
 
-# create PostGIS extensions in ${USER} database
+# create PostGIS extensions in ${USER} and voter_reg databases
 psql -d ${USER} -U postgres -f create-postgis-extensions.psql
+psql -d voter_reg -U postgres -f create-postgis-extensions.psql
 
 # create TIGER geocoding / reverse geocoding extensions in 'geocoder' database
 psql -d geocoder -U postgres -f create-geocoder-extensions.psql
