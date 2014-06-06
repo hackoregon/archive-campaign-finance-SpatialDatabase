@@ -31,3 +31,4 @@ sudo yum install -y \
   osm-gps-map \
   readosm \
   routino
+sudo ./install-pagc-address-standardizer.bash
