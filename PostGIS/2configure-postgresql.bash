@@ -14,7 +14,7 @@ sudo systemctl enable postgresql # start the server on reboot
 sudo systemctl start postgresql # start the server now
 
 # password protect the PostgreSQL superuser, 'postgres'
-echo "Create a PostgreSQL password for 'postgres', the PostgreSQL superuser"
+echo "Creating a database password for 'postgres', the PostgreSQL superuser"
 psql -U postgres -d postgres -c '\password postgres'
 
 # patch the configuration to force MD5 password authentication
@@ -25,6 +25,8 @@ sudo systemctl restart postgresql # restart the server
 psql -d postgres -U postgres -f create-default-extensions.psql
 
 # set up non-superuser
+echo "Creating a non-superuser database user ${USER}"
+echo "You will be asked to create a database password for the new user"
 sed "s/znmeb/${USER}/g" create-user.psql \
   | psql -d postgres -U postgres
 
