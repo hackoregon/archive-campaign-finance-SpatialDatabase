@@ -16,7 +16,8 @@ sudo chown -R ${USER}:${USER} ${OUT}
 rm -f ${OUT}/DistrictPrecinctDetail.txt
 echo "Unpacking district precinct detail"
 unzip -p ${RAW}/Ex-DistrictPrecinctDetail.zip \
-  | dos2unix \
+  | sed 's/[ \t]*$//' \
+  | grep -v -e '^[ \t]*$' \
   | grep -v ^COUNTY \
   >> ${OUT}/DistrictPrecinctDetail.txt
 sed "s/znmeb/${USER}/" DistrictPrecinctDetail.psql \
@@ -27,11 +28,10 @@ echo "Unpacking registered voters"
 for i in ${RAW}/Ex-RegisteredVoters*zip
 do
   unzip -p ${i} \
-    | dos2unix \
-    | grep -v ^VOTER_ID \
     | grep -v ^17303866 \
     | grep -v ^100640811 \
     | grep -v ^100498123 \
+    | grep -v ^VOTER_ID \
     >> ${OUT}/RegisteredVoters.txt
 done
 sed "s/znmeb/${USER}/" RegisteredVoters.psql \
