@@ -27,18 +27,10 @@ do
   unzip -p ${i} \
     | dos2unix \
     | grep -v ^VOTER_ID \
+    | grep -v ^17303866 \
+    | grep -v ^100640811 \
+    | grep -v ^100498123 \
     >> ${OUT}/RegisteredVoters.txt
 done
 sed "s/znmeb/${USER}/" RegisteredVoters.psql \
-  | psql -d voter_reg -U ${USER}
-
-rm -f ${OUT}/VotingHistory.txt
-for i in ${RAW}/00_Ex-VotingHistory*zip
-do
-  unzip -p ${i} \
-    | dos2unix \
-    | grep -v ^VOTER_ID \
-    >> ${OUT}/VotingHistory.txt
-done
-sed "s/znmeb/${USER}/" VotingHistory.psql \
   | psql -d voter_reg -U ${USER}
