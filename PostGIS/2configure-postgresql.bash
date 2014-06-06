@@ -32,4 +32,4 @@ sed "s/znmeb/${USER}/g" configure-postgresql.psql \
 psql -d ${USER} -U postgres -f create-postgis-extensions.psql
 
 # create TIGER geocoding / reverse geocoding extensions in 'geocoder' database
-psql -d postgres -U postgres -f create-geocoder-extensions.psql
+psql -d geocoder -U postgres -f create-geocoder-extensions.psql
