@@ -15,7 +15,7 @@ sudo systemctl start postgresql # start the server now
 
 # password protect the PostgreSQL superuser, 'postgres'
 echo "Create a PostgreSQL password for 'postgres', the PostgreSQL superuser"
-#psql -U postgres -d postgres -c '\password postgres'
+psql -U postgres -d postgres -c '\password postgres'
 
 # patch the configuration to force MD5 password authentication
 sudo patch -N -b /var/lib/pgsql/data/pg_hba.conf pg_hba.conf.patch
@@ -25,7 +25,7 @@ sudo systemctl restart postgresql # restart the server
 psql -d postgres -U postgres -f create-default-extensions.psql
 
 # set up non-superuser
-sed "s/znmeb/${USER}/g" configure-postgresql.psql \
+sed "s/znmeb/${USER}/g" create-user.psql \
   | psql -d postgres -U postgres
 
 # create PostGIS extensions in ${USER} database
