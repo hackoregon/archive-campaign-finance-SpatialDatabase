@@ -40,6 +40,6 @@ CREATE TABLE registered_voters (
   precinct_name text,
   precinct text,
   split text
-)
+);
 ALTER TABLE registered_voters OWNER TO znmeb;
 \copy registered_voters from '/gisdata/RegisteredVoters.txt';
