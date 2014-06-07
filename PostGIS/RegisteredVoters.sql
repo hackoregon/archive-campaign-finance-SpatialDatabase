@@ -43,3 +43,39 @@ CREATE TABLE registered_voters (
 );
 ALTER TABLE registered_voters OWNER TO znmeb;
 \copy registered_voters from '/gisdata/RegisteredVoters.txt';
+
+DROP VIEW IF EXISTS public.duplicate_voter_ids CASCADE;
+CREATE OR REPLACE VIEW public.duplicate_voter_ids AS 
+ SELECT registered_voters.voter_id,
+    count(registered_voters.voter_id) AS id_count
+   FROM registered_voters
+  GROUP BY registered_voters.voter_id
+ HAVING count(registered_voters.voter_id) > 1;
+
+ALTER TABLE public.duplicate_voter_ids
+  OWNER TO znmeb;
+
+DROP VIEW IF EXISTS public.show_duplicate_voter_ids CASCADE;
+CREATE OR REPLACE VIEW public.show_duplicate_voter_ids AS 
+ SELECT registered_voters.voter_id,
+    registered_voters.status,
+    registered_voters.party_code,
+    registered_voters.first_name,
+    registered_voters.last_name,
+    registered_voters.res_address_1,
+    registered_voters.eff_address_1,
+    registered_voters.city,
+    registered_voters.eff_city,
+    registered_voters.state,
+    registered_voters.eff_state,
+    registered_voters.zip_code,
+    registered_voters.eff_zip_code,
+    registered_voters.county,
+    registered_voters.precinct,
+    registered_voters.split
+   FROM duplicate_voter_ids,
+    registered_voters
+  WHERE registered_voters.voter_id = duplicate_voter_ids.voter_id;
+
+ALTER TABLE public.show_duplicate_voter_ids
+  OWNER TO znmeb;
