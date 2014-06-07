@@ -2,7 +2,7 @@ Type,FTP Location
 state,ftp://ftp.census.gov/geo/tiger/TIGER2013/STATE/tl*
 congress_districts,ftp://ftp.census.gov/geo/tiger/TIGER2013/CD/tl*
 county,ftp://ftp.census.gov/geo/tiger/TIGER2013/COUNTY/tl*
-zip_code_tabulation_areas,ftp://ftp.census.gov/geo/tiger/TIGER2013/ZTCA5/tl*
+zip_code_tabulation_areas,ftp://ftp.census.gov/geo/tiger/TIGER2013/ZCTA5/tl*
 blocks,ftp://ftp.census.gov/geo/tiger/TIGER2013/TABBLOCK/tl_*_41*
 block_groups,ftp://ftp.census.gov/geo/tiger/TIGER2013/BG/tl_*_41*
 tracts,ftp://ftp.census.gov/geo/tiger/TIGER2013/TRACT/tl_*_41*
