@@ -20,7 +20,7 @@ unzip -p ${RAW}/Ex-DistrictPrecinctDetail.zip \
   | grep -v -e '^[ \t]*$' \
   | grep -v ^COUNTY \
   >> ${OUT}/DistrictPrecinctDetail.txt
-sed "s/znmeb/${USER}/" DistrictPrecinctDetail.psql \
+sed "s/znmeb/${USER}/" DistrictPrecinctDetail.sql \
   | psql -d voter_reg -U ${USER}
 
 rm -f ${OUT}/RegisteredVoters.txt
@@ -34,5 +34,5 @@ do
     | grep -v ^VOTER_ID \
     >> ${OUT}/RegisteredVoters.txt
 done
-sed "s/znmeb/${USER}/" RegisteredVoters.psql \
+sed "s/znmeb/${USER}/" RegisteredVoters.sql \
   | psql -d voter_reg -U ${USER}
