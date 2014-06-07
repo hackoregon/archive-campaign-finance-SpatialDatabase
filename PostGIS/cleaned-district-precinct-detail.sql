@@ -11,8 +11,7 @@ FROM
 WHERE 
   district_precinct_detail.district_type != 'FEDERAL STATEWIDE' AND 
   district_precinct_detail.district_type != 'STATEWIDE PARTISAN' AND 
-  district_precinct_detail.district_type != 'STATEWIDE NONPARTISAN' AND
-  district_precinct_detail.district_type != 'COUNTYWIDE'
+  district_precinct_detail.district_type != 'STATEWIDE NONPARTISAN'
 ORDER BY
   district_precinct_detail.county ASC, 
   district_precinct_detail.precinct ASC, 
