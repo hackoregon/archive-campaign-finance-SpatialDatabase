@@ -25,7 +25,7 @@ for i in \
   http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
   http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
 do
   wget -q -nc ${i}
 done
