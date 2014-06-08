@@ -9,6 +9,10 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+# create the geocoder database
+sed "s/znmeb/${USER}/" create-geocoder.sql \
+  | psql -d postgres -U postgres
+
 # make workspace
 sudo rm -fr /gisdata/temp
 sudo mkdir -p /gisdata/temp
@@ -18,10 +22,12 @@ sudo chown -R ${USER}:${USER} /gisdata
 psql -f make-tiger-scripts.sql geocoder znmeb
 chmod +x /gisdata/*.bash
 
-# fix path
+# fix paths
 for i in '/gisdata/national.bash' '/gisdata/oregon.bash'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}
+  sed -i 's;ftp2.census.gov;ftp.census.gov;' ${i}
+  sed -i 's;--no-parent;--quiet --no-parent;' ${i}
 done
 
 # change owner to 'postgres' - the generated scripts have to run as 'postgres'
