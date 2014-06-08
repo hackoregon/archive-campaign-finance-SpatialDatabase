@@ -13,14 +13,3 @@ CREATE DATABASE znmeb
   WITH OWNER znmeb;
 \connect znmeb
 \i create-postgis-extensions.sql
-
-CREATE DATABASE voter_reg
-  WITH OWNER znmeb;
-\connect voter_reg
-\i create-postgis-extensions.sql
-
-CREATE DATABASE geocoder
-  WITH OWNER postgres;
-\connect geocoder
-\i create-postgis-extensions.sql
-\i create-geocoder-extensions.sql
