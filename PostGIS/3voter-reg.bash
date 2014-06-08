@@ -12,10 +12,13 @@
 export RAW=${1} # where the zipped files live
 export OUT=/gisdata # where the cleaned files live
 sudo chown -R ${USER}:${USER} ${OUT}
+sed "s/znmeb/${USER}/" create-voter_reg.sql \
+  | psql -d postgres -U postgres
 
 rm -f ${OUT}/DistrictPrecinctDetail.txt
 echo "Unpacking district precinct detail"
 unzip -p ${RAW}/Ex-DistrictPrecinctDetail.zip \
+  | iconv -f LATIN1 -t UTF8 \
   | sed 's/[ \t]*$//' \
   | grep -v -e '^[ \t]*$' \
   | grep -v ^COUNTY \
@@ -28,6 +31,7 @@ echo "Unpacking registered voters"
 for i in ${RAW}/Ex-RegisteredVoters*zip
 do
   unzip -p ${i} \
+    | iconv -f LATIN1 -t UTF8 \
     | grep -v ^17303866 \
     | grep -v ^100640811 \
     | grep -v ^100498123 \
