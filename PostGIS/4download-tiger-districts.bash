@@ -12,57 +12,124 @@
 # make shapefile destinations
 sudo mkdir -p /gisdata
 sudo chown -R ${USER}:${USER} /gisdata
+cp create-postgis-extensions.sql /gisdata
+cd /gisdata
+
+# Grab documentation
 for i in \
+  http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2013/TGRSHP2013_TechDoc.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/Downloading_TIGERLine_Shp.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/2_Opening.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/Downloading_AFFData.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
+  http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+do
+  wget -q -nc ${i}
+done
+
+# Grab shapefiles
+rm -fr shapefiles
+for i in \
+  state \
   congress_districts \
+  county \
+  zip_code_tabulation_areas \
+  blocks \
+  block_groups \
+  tracts \
+  county_subdivisions \
   elementary_school_districts \
   secondary_school_districts \
   unified_school_districts \
   state_legislature_lower_districts \
   state_legislature_upper_districts
 do
-  rm -fr /gisdata/${i}
-  mkdir -p /gisdata/${i}
+  mkdir -p shapefiles/${i}
 done
-
-cd /gisdata
 
 # download data
 for i in \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/tl* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/STATE/tl* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/CD/tl* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/COUNTY/tl* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/ZCTA5/tl* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/TABBLOCK/tl_*_41* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/BG/tl_*_41* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/TRACT/tl_*_41* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/COUSUB/tl_*_41* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_* \
+  ftp://ftp.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
 do
-  wget ${i} --no-parent --relative --recursive --level=1 --accept=zip \
+  wget ${i} --quiet --no-parent --relative --recursive --level=1 --accept=zip \
     --mirror --reject=html 
 done
 
 # unzip
-unzip -o -d congress_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/CD/tl*
-unzip -o -d elementary_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_*
-unzip -o -d secondary_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_*
-unzip -o -d unified_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_*
-unzip -o -d state_legislature_lower_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_*
-unzip -o -d state_legislature_upper_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
+unzip -o -d shapefiles/state \
+  ftp.census.gov/geo/tiger/TIGER2013/STATE/tl*
+unzip -o -d shapefiles/congress_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/CD/tl*
+unzip -o -d shapefiles/county \
+  ftp.census.gov/geo/tiger/TIGER2013/COUNTY/tl*
+unzip -o -d shapefiles/zip_code_tabulation_areas \
+  ftp.census.gov/geo/tiger/TIGER2013/ZCTA5/tl*
+unzip -o -d shapefiles/blocks \
+  ftp.census.gov/geo/tiger/TIGER2013/TABBLOCK/tl_*_41*
+unzip -o -d shapefiles/block_groups \
+  ftp.census.gov/geo/tiger/TIGER2013/BG/tl_*_41*
+unzip -o -d shapefiles/tracts \
+  ftp.census.gov/geo/tiger/TIGER2013/TRACT/tl_*_41*
+unzip -o -d shapefiles/county_subdivisions \
+  ftp.census.gov/geo/tiger/TIGER2013/COUSUB/tl_*_41*
+unzip -o -d shapefiles/elementary_school_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_*
+unzip -o -d shapefiles/secondary_school_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_*
+unzip -o -d shapefiles/unified_school_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_*
+unzip -o -d shapefiles/state_legislature_lower_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_*
+unzip -o -d shapefiles/state_legislature_upper_districts \
+  ftp.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
 
 # push into databases
 for i in \
+  state \
   congress_districts \
+  county \
+  zip_code_tabulation_areas \
+  blocks \
+  block_groups \
+  tracts \
+  county_subdivisions \
   elementary_school_districts \
   secondary_school_districts \
   unified_school_districts \
   state_legislature_lower_districts \
   state_legislature_upper_districts
 do
-  pushd ${i}
-  shp2pgsql -d -D -I tl*shp | psql -d ${i}
+  pushd shapefiles/${i}
+  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${i};"
+  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${i} WITH OWNER ${USER};"
+  psql -U postgres -d ${i} -f "/gisdata/create-postgis-extensions.sql"
+  shp2pgsql \
+    -s 4269:4326 \
+    -W LATIN1 \
+    -c \
+    -I \
+    tl*shp \
+    | psql -U ${USER} -d ${i} > /dev/null
+  pg_dump \
+    --username=postgres \
+    --format=custom \
+    --compress=9 \
+    --file="/gisdata/${i}.pgdump" \
+    ${i}
   popd
 done
