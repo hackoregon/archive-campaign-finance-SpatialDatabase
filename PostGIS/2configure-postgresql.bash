@@ -25,5 +25,5 @@ sudo systemctl restart postgresql # restart the server
 # set up non-superuser
 echo "Creating a non-superuser database user ${USER}"
 echo "You will be asked to set a password for ${USER}"
-sed "s/znmeb/${USER}/g" 01create-default-extensions-and-user.sql \
+sed "s/znmeb/${USER}/g" create-default-extensions-and-user.sql \
   | psql -d postgres -U postgres
