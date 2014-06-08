@@ -20,6 +20,11 @@ PostgreSQL just like 'root' can on a Linux system. So for practical
 usage you'll ususally want to create a non-superuser role for day-to-day
 work.
 
+***Note on '/gisdata'***: Several of the scripts use a
+globally-recognized area '/gisdata' for storing and manipulating data.
+This originated with the geocoder data described below, but it's useful
+as a data store for other purposes.
+
 Install the Linux packages
 --------------------------
 
@@ -53,9 +58,10 @@ This script
 
 The database user and home database will have the same name as your
 Linux login. For example, if your login is 'charlie' you'll have a
-database login of 'charlie' and there will be a database named
-'charlie'. The script will ask you to create a password for this user as
-well.
+database login of 'charlie' and there will be a home database named
+'charlie'. The home database will have the 'postgis',
+'postgis\_topology' and 'address\_standardizer' extensions installed.
+The script will ask you to create a password for this user as well.
 
 You only have to run this script once, but it won't hurt anything if you
 run it again.
@@ -66,8 +72,10 @@ run it again.
     ./3load-voter-reg.bash /path/to/voter_reg_zip_files
 
 If you have the voter registration database ZIP archives, this script
-will load some of the data into PostgreSQL. This is mostly for my use at
-the moment; we may not need it for the actual application.
+will load some of the data into PostgreSQL. After loading the data, the
+script will create a PostgreSQL dump file '/gisdata/voter\_reg.pgdump'.
+This is mostly for my use at the moment; we may not need it for the
+actual application.
 
 Download the TIGER districts
 ----------------------------
@@ -94,7 +102,8 @@ site.
 
 After the download, the script unpacks the ZIP archives and imports them
 into the databases. You can ignore any ERROR messages this script
-generates.
+generates. After the databases are populated, a PostgreSQL dump file is
+created for each one in '/gisdata'.
 
 Download the TIGER/Line® geocoder data.
 ---------------------------------------
@@ -107,7 +116,7 @@ Second Edition*](http://www.manning.com/obe2/).
     ./5make-geocoder-download-scripts.bash
 
 This executes some code in the PostGIS package to create two scripts in
-`/gisdata`. One script, called 'national.bash', downloads nationwide
+'/gisdata'. One script, called 'national.bash', downloads nationwide
 state and county shapefiles. The second, called 'oregon.bash', downloads
 detailed shapefiles for Oregon.
 
@@ -145,4 +154,6 @@ for the 'postgres' role. Notes:
 After you've edited them, '6run-geocoder-scripts.bash' will run the
 download scripts. Like previous download scripts, they will run longer
 the first time while downloading the raw data from the TIGER/Line® FTP
-site. Later ones will only download changed ZIP archives.
+site. Later ones will only download changed ZIP archives. Once the
+'geocoder' database is populated, the script will create a PostgreSQL
+dump of it in '/gisdata/geocoder.pgdump'.
