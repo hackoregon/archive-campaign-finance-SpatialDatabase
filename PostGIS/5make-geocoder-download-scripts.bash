@@ -17,6 +17,7 @@ sed "s/znmeb/${USER}/" create-geocoder.sql \
 sudo rm -fr /gisdata/temp
 sudo mkdir -p /gisdata/temp
 sudo chown -R ${USER}:${USER} /gisdata
+cp 6run-geocoder-scripts.bash dump-database.bash /gisdata
 
 # execute script builder
 psql -f make-tiger-scripts.sql geocoder znmeb
