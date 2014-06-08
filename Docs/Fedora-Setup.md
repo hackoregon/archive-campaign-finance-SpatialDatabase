@@ -46,22 +46,36 @@ This script
 
 -   creates the PostgreSQL data area on the hard drive,
 -   enables the PostgreSQL server to start at boot time,
--   starts the PostgreSQL server, and
--   installs the 'adminpack' and 'plpgsql' extensions.
+-   starts the PostgreSQL server,
+-   asks you to create a password for the 'postgres' database superuser,
+-   installs the 'adminpack' and 'plpgsql' extensions, and
+-   creates a non-superuser database user and a 'home' database.
 
-The script will ask you to create a password for the PostgreSQL
-'superuser' role, named 'postgres'. You only have to run this script
-once, but it won't hurt anything if you run it again.
+The database user and home database will have the same name as your
+Linux login. For example, if your login is 'charlie' you'll have a
+database login of 'charlie' and there will be a database named
+'charlie'. The script will ask you to create a password for this user as
+well.
 
-Set up the PostGIS databases
+You only have to run this script once, but it won't hurt anything if you
+run it again.
+
+(Optional) Load the 'voter\_reg' database
+-----------------------------------------
+
+    ./3load-voter-reg.bash /path/to/voter_reg_zip_files
+
+If you have the voter registration database ZIP archives, this script
+will load some of the data into PostgreSQL. This is mostly for my use at
+the moment; we may not need it for the actual application.
+
+Download the TIGER districts
 ----------------------------
 
-    ./3set-up-postgis.bash
+    ./4download-tiger-districts.bash
 
-This will create a ***non-superuser*** PostgreSQL role with the same
-name as your Fedora Linux login. If the role exists already, it will be
-deleted and recreated. Then the script will create the following empty
-databases for that user:
+This script will create the following databases for the non-superuser
+database role:
 
 -   congress\_districts: US Congressional districts for the whole USA
 -   state\_legislature\_upper\_districts: Oregon State Senate districts
@@ -70,32 +84,22 @@ databases for that user:
 -   elementary\_school\_districts: Elementary school districts for
     Oregon
 -   secondary\_school\_districts: Secondary school districts for Oregon
--   geocoder: A database for the TIGER/Line® geocoding / reverse
-    geocoding package
--   orestar: A database for the ORESTAR data
--   voterreg: A database for the voter registration database
 
-Download the district shapefiles
---------------------------------
-
-    ./4download-tiger-districts.bash
-
-This will download the shapefiles (except for the 'geocoder' data)
-required to populate the databases from the [US Census Bureau's
-TIGER/Line® FTP
+First, the script will download the shapefiles required to populate the
+databases from the [US Census Bureau's TIGER/Line® FTP
 site](http://www.census.gov/geo/maps-data/data/tiger-line.html). The
 first time you run it, it will take longer because it's downloading, but
 subsequent runs will only download if the file has changed on the FTP
 site.
 
 After the download, the script unpacks the ZIP archives and imports them
-into the databases. You can ignore the ERROR messages this script
+into the databases. You can ignore any ERROR messages this script
 generates.
 
 Download the TIGER/Line® geocoder data.
 ---------------------------------------
 
-This is a three-step process. For more details, see [*PostGIS in Action,
+This is a two-step process. For more details, see [*PostGIS in Action,
 Second Edition*](http://www.manning.com/obe2/).
 
 ### Create the download scripts.
@@ -103,20 +107,25 @@ Second Edition*](http://www.manning.com/obe2/).
     ./5make-geocoder-download-scripts.bash
 
 This executes some code in the PostGIS package to create two scripts in
-`/gisdata`. One script, called 'state-county.bash', downloads nationwide
+`/gisdata`. One script, called 'national.bash', downloads nationwide
 state and county shapefiles. The second, called 'oregon.bash', downloads
 detailed shapefiles for Oregon.
 
-### Edit the download scripts.
+### Edit and run the download scripts.
 
     sudo su - postgres
     cd /gisdata
+    ./6run-geocoder-scripts.bash
 
 This puts you into the PostgreSQL ***Linux*** maintenance account. The
-scripts require this 'superuser' privilege to run. Edit the two 'bash'
-scripts to set the ***PostgreSQL*** password for the 'postgres' role -
-you should have set this password in the 'Configure PostgreSQL' step.
-You'll see a line
+scripts require this 'superuser' privilege to run.
+
+#### Edit the download scripts
+
+The '6run-geocoder-scripts.bash' script will first ask you to edit the
+two 'bash' scripts to set the ***PostgreSQL*** password for the
+'postgres' role - you should have set this password in the 'Configure
+PostgreSQL' step. You'll see a line
 
     export PGPASSWORD=yourpasswordhere
 
@@ -131,46 +140,9 @@ for the 'postgres' role. Notes:
 
     export PGPASSWORD='duck,duck:g00s3'
 
-### Run the download scripts.
+#### Run the download scripts.
 
-    ./state-county.bash
-    ./oregon.bash
-
-Like the previous download script, they will run longer the first time
-while downloading the raw data from the TIGER/Line® FTP site. Later ones
-will only download changed ZIP archives.
-
-Loading the ORESTAR database (optional)
----------------------------------------
-
-This step is optional - so far we don't have any spatial use cases for
-this database. But if you want to explore it, here's how:
-
-1.  Get a copy of the file 'hackoregon.sql.bz2'.
-2.  In a terminal, type
-
-<!-- -->
-
-    sudo su - postgres
-    bzip2 -dc /path/to/hackoregon.sql.bz2 | psql -d orestar
-
-The contents of the database dump file will be restored to the 'orestar'
-database.
-
-Loading the district precinct detail database (optional)
---------------------------------------------------------
-
-This step is optional. I think this will be useful for the project,
-especially Ballot Path, but we need some documentation on what the data
-means.
-
-1.  Get a copy of the directory 'voter\_reg'.
-2.  In a terminal, type
-
-<!-- -->
-
-    ./create-district-precinct-detail.bash /path/to/voter_reg
-
-The script will unzip the input file, clean it up, create the
-'district\_precinct\_detail' table in the 'voterreg' database and copy
-the data into the table.
+After you've edited them, '6run-geocoder-scripts.bash' will run the
+download scripts. Like previous download scripts, they will run longer
+the first time while downloading the raw data from the TIGER/Line® FTP
+site. Later ones will only download changed ZIP archives.
