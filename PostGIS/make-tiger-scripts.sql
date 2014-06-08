@@ -1,6 +1,6 @@
 \t
 \a
-\o /gisdata/state-county.bash
+\o /gisdata/national.bash
 SELECT loader_generate_nation_script('sh');
 \o
 \o /gisdata/oregon.bash
