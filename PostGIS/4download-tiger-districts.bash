@@ -92,4 +92,5 @@ do
     tl*shp \
     | psql -U ${USER} -d ${i} > /dev/null
   /gisdata/dump-database.bash ${i}
+  popd
 done
