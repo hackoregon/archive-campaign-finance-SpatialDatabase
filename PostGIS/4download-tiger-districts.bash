@@ -13,6 +13,7 @@
 sudo mkdir -p /gisdata
 sudo chown -R ${USER}:${USER} /gisdata
 cp create-postgis-extensions.sql /gisdata
+cp dump-database.bash /gisdata
 cd /gisdata
 
 # Grab documentation
@@ -90,11 +91,5 @@ do
     -I \
     tl*shp \
     | psql -U ${USER} -d ${i} > /dev/null
-  pg_dump \
-    --username=postgres \
-    --format=custom \
-    --compress=9 \
-    --file="/gisdata/${i}.pgdump" \
-    ${i}
-  popd
+  /gisdata/dump-database.bash ${i}
 done

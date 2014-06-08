@@ -40,3 +40,5 @@ do
 done
 sed "s/znmeb/${USER}/" RegisteredVoters.sql \
   | psql -d voter_reg -U ${USER}
+
+./dump-database.bash voter_reg
