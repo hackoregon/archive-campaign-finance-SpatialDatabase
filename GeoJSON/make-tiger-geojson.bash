@@ -79,7 +79,7 @@ do
     mkdir -p GeoJSON/${i}
     echo "ogr2ogr -f GeoJSON ${DEST} ${SOURCE}"
     ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
-    zip -9r GeoJSONzip/${i}.zip ${DEST}
+    zip -9ur GeoJSONzip/${i}.zip ${DEST}
     echo ${SOURCE} ${DEST}
 done
 
