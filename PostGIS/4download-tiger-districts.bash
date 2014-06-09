@@ -9,9 +9,9 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# make shapefile destinations
-sudo mkdir -p /gisdata
-sudo chown -R ${USER}:${USER} /gisdata
+# run the GeoJSON creator first to snag all the data
+../GeoJSON/make-tiger-geojson.bash
+
 cp create-postgis-extensions.sql /gisdata
 cp dump-database.bash /gisdata
 cd /gisdata
@@ -31,66 +31,49 @@ do
   wget -q -nc ${i}
 done
 
-# Grab shapefiles
-rm -fr shapefiles
-for i in \
-  congress_districts \
-  elementary_school_districts \
-  secondary_school_districts \
-  unified_school_districts \
-  state_legislature_lower_districts \
-  state_legislature_upper_districts
+# national
+# Congressional districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/
+# Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
+# States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
+# ZIP Code Tabulation Areas: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ZCTA5/
+for i in STATE COUNTY CD ZCTA5
 do
-  mkdir -p shapefiles/${i}
-done
-
-# download data
-for i in \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/tl* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_* \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
-do
-  wget ${i} --quiet --no-parent --relative --recursive --level=1 --accept=zip \
-    --mirror --reject=html 
-done
-
-# unzip
-unzip -o -d shapefiles/congress_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/CD/tl*
-unzip -o -d shapefiles/elementary_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_*
-unzip -o -d shapefiles/secondary_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_*
-unzip -o -d shapefiles/unified_school_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_*
-unzip -o -d shapefiles/state_legislature_lower_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_*
-unzip -o -d shapefiles/state_legislature_upper_districts \
-  ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
-
-# push into databases
-for i in \
-  congress_districts \
-  elementary_school_districts \
-  secondary_school_districts \
-  unified_school_districts \
-  state_legislature_lower_districts \
-  state_legislature_upper_districts
-do
+  j=`echo ${i} | tr [:upper:] [:lower:]` # database names need to be lowercase
   pushd shapefiles/${i}
-  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${i};"
-  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${i} WITH OWNER ${USER};"
-  psql -U postgres -d ${i} -f "/gisdata/create-postgis-extensions.sql"
+  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${j};"
+  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${j} WITH OWNER ${USER};"
+  psql -U postgres -d ${j} -f "/gisdata/create-postgis-extensions.sql"
   shp2pgsql \
     -s 4269 \
     -W LATIN1 \
     -c \
     -I \
     tl*shp \
-    | psql -U ${USER} -d ${i} > /dev/null
-  /gisdata/dump-database.bash ${i}
+    | psql -U ${USER} -d ${j} > /dev/null
+  /gisdata/dump-database.bash ${j}
+  popd
+done
+
+# state of Oregon
+# State Senators: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/
+# State Representatives: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/
+# Elementary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/
+# Secondary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/
+# Unified School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/
+for i in ELSD SCSD SLDL SLDU UNSD
+do
+  j=`echo ${i} | tr [:upper:] [:lower:]` # database names need to be lowercase
+  pushd shapefiles/${i}
+  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${j};"
+  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${j} WITH OWNER ${USER};"
+  psql -U postgres -d ${j} -f "/gisdata/create-postgis-extensions.sql"
+  shp2pgsql \
+    -s 4269 \
+    -W LATIN1 \
+    -c \
+    -I \
+    tl*shp \
+    | psql -U ${USER} -d ${j} > /dev/null
+  /gisdata/dump-database.bash ${j}
   popd
 done
