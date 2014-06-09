@@ -26,7 +26,7 @@ for i in \
   http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
   http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
 do
   wget -q -nc ${i}
 done
@@ -46,12 +46,12 @@ done
 
 # download data
 for i in \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/CD/tl* \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_* \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_* \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_* \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_* \
-  ftp://ftp.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/tl* \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_* \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_* \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_* \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_* \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
 do
   wget ${i} --quiet --no-parent --relative --recursive --level=1 --accept=zip \
     --mirror --reject=html 
@@ -59,17 +59,17 @@ done
 
 # unzip
 unzip -o -d shapefiles/congress_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/CD/tl*
+  ftp2.census.gov/geo/tiger/TIGER2013/CD/tl*
 unzip -o -d shapefiles/elementary_school_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_*
+  ftp2.census.gov/geo/tiger/TIGER2013/ELSD/tl_*_41_*
 unzip -o -d shapefiles/secondary_school_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_*
+  ftp2.census.gov/geo/tiger/TIGER2013/SCSD/tl_*_41_*
 unzip -o -d shapefiles/unified_school_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_*
+  ftp2.census.gov/geo/tiger/TIGER2013/UNSD/tl_*_41_*
 unzip -o -d shapefiles/state_legislature_lower_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_*
+  ftp2.census.gov/geo/tiger/TIGER2013/SLDL/tl_*_41_*
 unzip -o -d shapefiles/state_legislature_upper_districts \
-  ftp.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
+  ftp2.census.gov/geo/tiger/TIGER2013/SLDU/tl_*_41_*
 
 # push into databases
 for i in \

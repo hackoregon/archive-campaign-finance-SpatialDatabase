@@ -27,7 +27,7 @@ rm -fr census
 mkdir -p census
 
 # download data
-wget ftp://ftp.census.gov/geo/tiger/TIGER_DP/2012ACS/*41.gdb.zip \
+wget ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*41.gdb.zip \
   --quiet \
   --no-parent \
   --relative \
@@ -44,6 +44,6 @@ for i in \
   TRACT
 do
   unzip -o -d census \
-    ftp.census.gov/geo/tiger/TIGER_DP/2012ACS/ACS_2012_5YR_${i}_41.gdb.zip
+    ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/ACS_2012_5YR_${i}_41.gdb.zip
   ogrinfo "census/ACS_2012_5YR_${i}_41_OREGON.gdb/"
 done
