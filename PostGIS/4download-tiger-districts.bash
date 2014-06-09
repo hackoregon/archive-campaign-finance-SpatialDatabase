@@ -32,9 +32,9 @@ do
 done
 
 # national
-# Congressional districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/
-# Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
 # States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
+# Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
+# Congressional districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/
 # ZIP Code Tabulation Areas: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ZCTA5/
 for i in STATE COUNTY CD ZCTA5
 do
@@ -55,10 +55,10 @@ do
 done
 
 # state of Oregon
-# State Senators: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/
-# State Representatives: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/
 # Elementary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/
 # Secondary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/
+# State Representatives: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/
+# State Senators: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/
 # Unified School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/
 for i in ELSD SCSD SLDL SLDU UNSD
 do
