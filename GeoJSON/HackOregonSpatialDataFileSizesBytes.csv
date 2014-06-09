@@ -1,0 +1,11 @@
+TIGER/Line® Data Sizes,,,,,
+Area Names,TIGER Folder Code,Compressed Shapefile,Uncompressed Shapefile,Uncompressed GeoJSON,Compressed GeoJSON
+US Congressional Districts,CD,38M,61M,102M,25M
+US Counties,COUNTY,71M,114M,192M,47M
+Oregon Elementary School Districts,ELSD,88K,160K,220K,52K
+Oregon Secondary School Districts,SCSD,44K,84K,88K,20K
+Oregon House Districts,SLDL,2.3M,3.7M,6.4M,1.5M
+Oregon Senate Districts,SLDU,1.7M,2.7M,4.5M,1.1M
+US States,STATE,8.3M,14M,23M,5.5M
+Oregon Unified School Districts,UNSD,2.6M,4.2M,7.3M,1.7M
+US ZIP Code Tabulation Areas,ZCTA5,502M,801M,1.4G,326M
