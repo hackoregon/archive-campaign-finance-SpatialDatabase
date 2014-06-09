@@ -50,7 +50,7 @@ do
     mkdir -p GeoJSON/${i}
     echo "ogr2ogr -f GeoJSON ${DEST} ${SOURCE}"
     ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
-    zip -9r GeoJSONzip/${i}.zip ${DEST}
+    zip -9ur GeoJSONzip/${i}.zip ${DEST}
 done
 
 # state of Oregon
@@ -80,7 +80,6 @@ do
     echo "ogr2ogr -f GeoJSON ${DEST} ${SOURCE}"
     ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
     zip -9ur GeoJSONzip/${i}.zip ${DEST}
-    echo ${SOURCE} ${DEST}
 done
 
 pushd ftp2.census.gov/geo/tiger/TIGER2013
