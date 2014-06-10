@@ -9,9 +9,10 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+mkdir -p /gisdata/pgdump
 pg_dump \
   --username=postgres \
   --format=custom \
   --compress=9 \
-  --file="/gisdata/${1}.pgdump" \
+  --file="/gisdata/pgdump/${1}.pgdump" \
   ${1}
