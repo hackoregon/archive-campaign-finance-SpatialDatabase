@@ -15,15 +15,17 @@ sudo chown -R ${USER}:${USER} /gisdata
 cd /gisdata
 
 # Grab documentation
+mkdir -p docs
+pushd docs
 for i in \
   http://www2.census.gov/acs2012_5yr/summaryfile/ACS_2008-2012_SF_Tech_Doc.pdf \
   http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2012/TGRSHP2012_TechDoc.pdf
 do
   wget -q -nc ${i}
 done
+popd
 
 # create directories
-rm -fr census
 mkdir -p census
 
 # download data
@@ -36,14 +38,3 @@ wget ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*41.gdb.zip \
   --accept=zip \
   --mirror \
   --reject=html 
-
-# unzip
-for i in \
-  BG \
-  COUSUB \
-  TRACT
-do
-  unzip -o -d census \
-    ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/ACS_2012_5YR_${i}_41.gdb.zip
-  ogrinfo "census/ACS_2012_5YR_${i}_41_OREGON.gdb/"
-done
