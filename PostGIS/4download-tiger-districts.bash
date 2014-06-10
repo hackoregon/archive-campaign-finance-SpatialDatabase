@@ -17,12 +17,13 @@ cp dump-database.bash /gisdata
 cd /gisdata
 
 # Grab documentation
+mkdir docs
+pushd docs
 for i in \
   http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2013/TGRSHP2013_TechDoc.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/Downloading_TIGERLine_Shp.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/2_Opening.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/Downloading_AFFData.pdf \
-  http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
   http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
@@ -30,6 +31,7 @@ for i in \
 do
   wget -q -nc ${i}
 done
+popd
 
 # national
 # States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
