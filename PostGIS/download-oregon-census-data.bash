@@ -25,11 +25,7 @@ do
 done
 popd
 
-# create directories
-mkdir -p census
-
 # download data
-pushd census
 wget ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*41.gdb.zip \
   --quiet \
   --no-parent \
@@ -39,4 +35,3 @@ wget ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*41.gdb.zip \
   --accept=zip \
   --mirror \
   --reject=html 
-popd
