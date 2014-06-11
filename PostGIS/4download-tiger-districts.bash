@@ -17,7 +17,7 @@ cp dump-database.bash /gisdata
 cd /gisdata
 
 # Grab documentation
-mkdir docs
+mkdir -p docs
 pushd docs
 for i in \
   http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2013/TGRSHP2013_TechDoc.pdf \
