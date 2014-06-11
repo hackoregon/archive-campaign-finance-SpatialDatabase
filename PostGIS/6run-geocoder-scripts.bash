@@ -18,5 +18,5 @@ do
   ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
 done
 
-echo "dumping the 'geocoder' database
+echo "dumping the 'geocoder' database"
 ./dump-database.bash geocoder
