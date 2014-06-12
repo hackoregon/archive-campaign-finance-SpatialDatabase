@@ -3,4 +3,5 @@ CREATE DATABASE voter_reg
   WITH OWNER znmeb;
 \connect voter_reg
 \i create-postgis-extensions.sql
-\i create-geocoder-extensions.sql
+CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;
+CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder;
