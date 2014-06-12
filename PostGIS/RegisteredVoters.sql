@@ -79,3 +79,17 @@ CREATE OR REPLACE VIEW public.show_duplicate_voter_ids AS
 
 ALTER TABLE public.show_duplicate_voter_ids
   OWNER TO znmeb;
+
+DROP VIEW IF EXISTS public.geocoder_input_data CASCADE;
+
+CREATE OR REPLACE VIEW public.geocoder_input_data AS 
+ SELECT registered_voters.status,
+    registered_voters.party_code,
+    registered_voters.county,
+    registered_voters.precinct,
+    registered_voters.split,
+    normalize_address(concat_ws(' '::text, registered_voters.res_address_1, registered_voters.city, registered_voters.state, registered_voters.zip_code)::character varying) AS normalized_address
+   FROM registered_voters;
+
+ALTER TABLE public.geocoder_input_data
+  OWNER TO znmeb;
