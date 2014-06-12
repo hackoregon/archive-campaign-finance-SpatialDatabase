@@ -46,7 +46,7 @@ do
     --mirror \
     "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_us*zip" 
     mkdir -p shapefiles/${i}
-    unzip -u -d shapefiles/${i} \
+    unzip -n -u -d shapefiles/${i} \
       "ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_us*zip" 
     SOURCE=`find shapefiles/${i} -name '*.shp'`
     DEST=`echo ${SOURCE}|sed 's/shp/geojson/'|sed 's/shapefiles/GeoJSON/'`
@@ -80,7 +80,7 @@ do
     --mirror \
     "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_41*zip" 
     mkdir -p shapefiles/${i}
-    unzip -u -d shapefiles/${i} \
+    unzip -n -u -d shapefiles/${i} \
       "ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_41*zip" 
     SOURCE=`find shapefiles/${i} -name '*.shp'`
     DEST=`echo ${SOURCE}|sed 's/shp/geojson/'|sed 's/shapefiles/GeoJSON/'`
