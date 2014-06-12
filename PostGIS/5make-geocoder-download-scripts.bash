@@ -13,10 +13,10 @@
 sudo rm -fr /gisdata/temp
 sudo mkdir -p /gisdata/temp
 sudo chown -R ${USER}:${USER} /gisdata
-cp 6run-geocoder-scripts.bash dump-database.bash /gisdata
+cp run-geocoder-scripts.bash dump-database.bash /gisdata
 
 # execute script builder
-psql -f make-tiger-scripts.sql voter_reg postgres
+psql -f create-geocoder.sql postgres postgres
 chmod +x /gisdata/*.bash
 
 # fix paths
