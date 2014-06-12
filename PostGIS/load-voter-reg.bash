@@ -40,7 +40,3 @@ do
 done
 sed "s/znmeb/${USER}/" RegisteredVoters.sql \
   | psql -d voter_reg -U ${USER}
-
-# add columns needed for geocoding
-psql -d voter_reg -U postgres < alter-voter_reg.sql
-./dump-database.bash voter_reg
