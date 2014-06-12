@@ -14,6 +14,7 @@
 
 cp create-postgis-extensions.sql /gisdata
 cp dump-database.bash /gisdata
+chmod +x /gisdata/*.bash
 cd /gisdata
 
 # Grab documentation
