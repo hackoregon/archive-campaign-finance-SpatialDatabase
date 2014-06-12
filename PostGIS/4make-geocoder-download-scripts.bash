@@ -16,7 +16,7 @@ sudo chown -R ${USER}:${USER} /gisdata
 cp run-geocoder-scripts.bash dump-database.bash /gisdata
 
 # execute script builder
-psql -f create-geocoder.sql postgres postgres
+psql -f create-geocoder-database.sql postgres postgres
 chmod +x /gisdata/*.bash
 
 # fix paths
