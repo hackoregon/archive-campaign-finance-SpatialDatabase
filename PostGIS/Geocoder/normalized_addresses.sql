@@ -15,4 +15,4 @@ WITH (
 ALTER TABLE public.normalized_addresses
   OWNER TO znmeb;
 
-\copy normalized_addresses FROM '/gisdata/geocoder-data/headerless.csv' WITH (FORMAT CSV);
+\copy normalized_addresses FROM '/gisdata/geocoder-data/normalized_addresses.csv' WITH (FORMAT CSV);
