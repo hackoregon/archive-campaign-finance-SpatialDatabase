@@ -23,7 +23,6 @@ chmod +x /gisdata/*.bash
 for i in '/gisdata/national.bash' '/gisdata/oregon.bash'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}
-  sed -i 's;export PGDATABASE=geocoder;export PGDATABASE=voter_reg;' ${i}
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}
 done
 
