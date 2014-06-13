@@ -1,18 +1,14 @@
 ﻿DROP TABLE IF EXISTS public.normalized_addresses;
-
 CREATE TABLE public.normalized_addresses
 (
-  status text,
-  party_code text,
+  normalized_address norm_addy,
   county text,
   precinct text,
-  split text,
-  normalized_address norm_addy
+  split text
 )
 WITH (
   OIDS=FALSE
 );
 ALTER TABLE public.normalized_addresses
   OWNER TO znmeb;
-
 \copy normalized_addresses FROM '/gisdata/geocoder-data/normalized_addresses.csv' WITH (FORMAT CSV);
