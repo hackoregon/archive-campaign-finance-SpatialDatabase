@@ -1,13 +1,16 @@
-﻿UPDATE normalized_addresses
+﻿UPDATE registered_voters
 SET
-(geomout, rating, lon, lat) = (
+(normalized_address, geomout, rating, lon, lat) = (
+  pprint_addy((g).addy),
   (g).geomout,
   COALESCE((g).rating, -1),
   ST_X((g).geomout),
   ST_Y((g).geomout)
 )
-FROM (SELECT * FROM normalized_addresses
-WHERE rating IS NULL LIMIT 10000) AS a
-LEFT JOIN LATERAL geocode(a.normalized_address, 1) AS g
+FROM (SELECT * FROM registered_voters
+WHERE rating IS NULL LIMIT 100) AS a
+LEFT JOIN LATERAL 
+  geocode(concat_ws(' ', a.res_address_1, a.city, a.state, a.zip_code), 1)
+AS g
 ON ((g).rating < 22)
-WHERE a.addid = normalized_addresses.addid;
+WHERE a.addid = registered_voters.addid;
