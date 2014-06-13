@@ -1,5 +1,5 @@
 * pagc address standardizer is slower than the default. Measurements coming.
-* The default standardizer takes 11471049 milliseconds to process 2502343 rows on a 4.0 GHz workstation. That works out to about 4.68 milliseconds per address. The whole run took 3.19 hours.
+* The default standardizer takes 11897003 milliseconds to process 1322308 unique addresses on a 4.0 GHz workstation. That works out to about 3.3 hours.
 * Making the normalized_address table:
     1. In PgAdmin, open the SQL window in the 'voter_reg' database.
     1. Enter 'SELECT * FROM geocoder_input_data;'
