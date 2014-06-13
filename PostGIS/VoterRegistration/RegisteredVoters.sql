@@ -64,9 +64,7 @@ CREATE OR REPLACE VIEW public.duplicate_voter_ids AS
    FROM registered_voters
   GROUP BY registered_voters.voter_id
  HAVING count(registered_voters.voter_id) > 1;
-
-ALTER TABLE public.duplicate_voter_ids
-  OWNER TO znmeb;
+ALTER TABLE public.duplicate_voter_ids OWNER TO znmeb;
 
 DROP VIEW IF EXISTS public.show_duplicate_voter_ids CASCADE;
 CREATE OR REPLACE VIEW public.show_duplicate_voter_ids AS 
@@ -90,19 +88,20 @@ CREATE OR REPLACE VIEW public.show_duplicate_voter_ids AS
     registered_voters
   WHERE registered_voters.voter_id = duplicate_voter_ids.voter_id;
 
-ALTER TABLE public.show_duplicate_voter_ids
-  OWNER TO znmeb;
+ALTER TABLE public.show_duplicate_voter_ids OWNER TO znmeb;
 
 DROP VIEW IF EXISTS public.geocoder_input_data CASCADE;
-
 CREATE OR REPLACE VIEW public.geocoder_input_data AS 
- SELECT registered_voters.status,
-    registered_voters.party_code,
-    registered_voters.county,
-    registered_voters.precinct,
-    registered_voters.split,
-    normalize_address(concat_ws(' '::text, registered_voters.res_address_1, registered_voters.city, registered_voters.state, registered_voters.zip_code)::character varying) AS normalized_address
-   FROM registered_voters;
-
-ALTER TABLE public.geocoder_input_data
-  OWNER TO znmeb;
+ SELECT DISTINCT 
+  normalize_address(concat_ws(
+   ' '::text,
+   registered_voters.res_address_1,
+   registered_voters.city,
+   registered_voters.state,
+   registered_voters.zip_code
+  )::character varying) AS normalized_address,
+  registered_voters.county,
+  registered_voters.precinct,
+  registered_voters.split
+FROM registered_voters;
+ALTER TABLE public.geocoder_input_data OWNER TO znmeb;
