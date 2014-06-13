@@ -44,6 +44,19 @@ CREATE TABLE registered_voters (
 ALTER TABLE registered_voters OWNER TO znmeb;
 \copy registered_voters from '/gisdata/RegisteredVoters.txt';
 
+DROP INDEX IF EXISTS public.address_index CASCADE;
+CREATE INDEX address_index
+  ON public.registered_voters
+  USING btree (
+    res_address_1 COLLATE pg_catalog."default" text_pattern_ops,
+    city COLLATE pg_catalog."default" text_pattern_ops,
+    state COLLATE pg_catalog."default" text_pattern_ops,
+    zip_code COLLATE pg_catalog."default" text_pattern_ops,
+    county COLLATE pg_catalog."default" text_pattern_ops,
+    precinct COLLATE pg_catalog."default" text_pattern_ops,
+    split COLLATE pg_catalog."default" text_pattern_ops
+);
+
 DROP VIEW IF EXISTS public.duplicate_voter_ids CASCADE;
 CREATE OR REPLACE VIEW public.duplicate_voter_ids AS 
  SELECT registered_voters.voter_id,
