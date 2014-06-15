@@ -35,6 +35,7 @@ cd /gisdata
 mkdir -p docs
 pushd docs
 for i in \
+  http://download.osgeo.org/qgis/doc/manual/qgis-1.0.0_a-gentle-gis-introduction_en.pdf \
   http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-UserGuide-en.pdf \
   http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-QGISTrainingManual-en.pdf \
   http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-PyQGISDeveloperCookbook-en.pdf \
