@@ -30,5 +30,8 @@ sudo yum install -y \
   osm2pgsql \
   osm-gps-map \
   readosm \
-  routino
+  routino \
+  dans-gdal-scripts \
+  gdal-doc \
+  gdal-python
 sudo ./install-pagc-address-standardizer.bash
