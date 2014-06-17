@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# Copyright (C) 2014 by M. Edward (Ed) Borasky
+# Copyright (C) 2013 by M. Edward (Ed) Borasky
 #
 # This program is licensed to you under the terms of version 3 of the
 # GNU Affero General Public License. This program is distributed WITHOUT
@@ -9,21 +9,23 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-sudo postgresql-setup initdb # fails harmlessly if data directory isn't empty
-sudo systemctl enable postgresql # start the server on reboot
-sudo systemctl start postgresql # start the server now
+export NAME=${USER}
 
-# password protect the PostgreSQL superuser, 'postgres'
-echo "Creating a database password for 'postgres', the PostgreSQL superuser"
-psql -U postgres -d postgres -c '\password postgres'
+sudo postgresql-setup initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
 
-# patch the configuration to force MD5 password authentication
-sudo patch -N -b /var/lib/pgsql/data/pg_hba.conf pg_hba.conf.patch
-sudo systemctl restart postgresql # restart the server
+# install the extensions
+sudo su - postgres -c \
+  "psql -c 'CREATE EXTENSION IF NOT EXISTS adminpack;'"
+sudo su - postgres -c \
+  "psql -c 'CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;'"
 
-# install default extensions - will ERROR harmlessly if they're already there
-# set up non-superuser
-echo "Creating a non-superuser database user ${USER}"
-echo "You will be asked to set a password for ${USER}"
-sed "s/znmeb/${USER}/g" create-default-extensions-and-user.sql \
-  | psql -d postgres -U postgres
+# create a non-root user - can can log in and create schemas/tables only!
+sudo su - postgres -c "createuser ${NAME}"
+
+# create a 'home' database for the user
+sudo su - postgres -c "createdb --owner=${NAME} ${NAME}"
+
+# VACUUM!
+sudo su - postgres -c "vacuumdb --all --analyze --verbose"
