@@ -12,20 +12,15 @@
 # make workspace
 sudo rm -fr /gisdata/temp
 sudo mkdir -p /gisdata/temp
+sudo mkdir -p /gisdata/sql
+sudo mkdir -p /gisdata/bash
 sudo chown -R ${USER}:${USER} /gisdata
-cp run-geocoder-scripts.bash dump-database.bash /gisdata
 
-# execute script builder
+# copy the code to /gisdata
+cp run-geocoder-scripts.bash /gisdata/bash
+chmod +x /gisdata/bash/run-geocoder-scripts.bash
 sed "s/znmeb/${USER}/g" create-geocoder-database.sql \
-  | psql -d postgres -U postgres
-chmod +x /gisdata/*.bash
-
-# fix paths
-for i in '/gisdata/national.bash' '/gisdata/oregon.bash'
-do
-  sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}
-  sed -i 's;--no-parent;--quiet --no-parent;' ${i}
-done
+  > /gisdata/sql/create-geocoder-database.sql
 
 # change owner to 'postgres' - the generated scripts have to run as 'postgres'
 sudo chown -R postgres:postgres /gisdata
