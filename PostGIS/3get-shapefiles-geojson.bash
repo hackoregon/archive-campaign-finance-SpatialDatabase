@@ -26,8 +26,6 @@ sudo mkdir -p /gisdata/shapefiles
 sudo mkdir -p /gisdata/GeoJSON
 sudo mkdir -p /gisdata/GeoJSONzip
 sudo chown -R ${USER}:${USER} /gisdata
-cp create-postgis-extensions.sql /gisdata
-cp dump-database.bash /gisdata
 chmod +x /gisdata/*.bash
 cd /gisdata
 
@@ -81,21 +79,6 @@ do
   # this step will throw errors if the GeoJSON is already done, saving time
   ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
   zip -9ur GeoJSONzip/${i}.zip ${DEST}
-
-  j=`echo ${i} | tr [:upper:] [:lower:]` # database names should be lowercase
-  pushd shapefiles/${i}
-  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${j};"
-  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${j} WITH OWNER ${USER};"
-  psql -U postgres -d ${j} -f "/gisdata/create-postgis-extensions.sql"
-  shp2pgsql \
-    -s 4269 \
-    -W LATIN1 \
-    -c \
-    -I \
-    tl*shp \
-    | psql -U ${USER} -d ${j} > /dev/null
-  /gisdata/dump-database.bash ${j}
-  popd
 done
 
 # state of Oregon
@@ -131,21 +114,6 @@ do
   # this step will throw errors if the GeoJSON is already done, saving time
   ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
   zip -9ur GeoJSONzip/${i}.zip ${DEST}
-
-  j=`echo ${i} | tr [:upper:] [:lower:]` # database names should be lowercase
-  pushd shapefiles/${i}
-  psql -U ${USER} -d ${USER} -c "DROP DATABASE IF EXISTS ${j};"
-  psql -U ${USER} -d ${USER} -c "CREATE DATABASE ${j} WITH OWNER ${USER};"
-  psql -U postgres -d ${j} -f "/gisdata/create-postgis-extensions.sql"
-  shp2pgsql \
-    -s 4269 \
-    -W LATIN1 \
-    -c \
-    -I \
-    tl*shp \
-    | psql -U ${USER} -d ${j} > /dev/null
-  /gisdata/dump-database.bash ${j}
-  popd
 done
 
 # Oregon counties - geocoder uses them so we prefetch the shapefiles
