@@ -9,10 +9,7 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-mkdir -p /gisdata/pgdump
-pg_dump \
-  --username=postgres \
-  --format=custom \
-  --compress=9 \
-  --file="/gisdata/pgdump/${1}.pgdump" \
-  ${1}
+sudo mkdir -p /gisdata/pgdump
+sudo chown -R postgres:postgres /gisdata
+sudo su - postgres -c "pg_dump -Fc -Z9 -f /gisdata/pgdump/${1}.pgdump ${1}"
+sudo chown -R ${USER}:${USER} /gisdata
