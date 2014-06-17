@@ -18,7 +18,9 @@ for i in 'national' 'oregon'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
-  vim ${i}.bash
+  sed -i 's;export PGHOST=localhost;;' ${i}.bash
+  sed -i 's;export PGUSER=postgres;;' ${i}.bash
+  sed -i 's;export PGPASSWORD=.*$;;' ${i}.bash
   chmod +x ${i}.bash
   ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
 done
