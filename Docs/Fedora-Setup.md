@@ -52,108 +52,59 @@ This script
 -   creates the PostgreSQL data area on the hard drive,
 -   enables the PostgreSQL server to start at boot time,
 -   starts the PostgreSQL server,
--   asks you to create a password for the 'postgres' database superuser,
--   installs the 'adminpack' and 'plpgsql' extensions, and
--   creates a non-superuser database user and a 'home' database.
+-   installs the 'adminpack' and 'plpgsql' extensions,
+-   creates a non-superuser database user and a 'home' database for that
+    user, and
+-   performs a '[VACUUM
+    ANALYZE](http://www.postgresql.org/docs/9.3/static/sql-vacuum.html)'
+    to optimize the database.
 
 The database user and home database will have the same name as your
 Linux login. For example, if your login is 'charlie' you'll have a
 database login of 'charlie' and there will be a home database named
-'charlie'. The home database will have the 'postgis',
-'postgis\_topology' and 'address\_standardizer' extensions installed.
-The script will ask you to create a password for this user as well.
+'charlie'. You only have to run this script once, but it won't hurt
+anything if you run it again.
 
-You only have to run this script once, but it won't hurt anything if you
-run it again.
+Download the TIGER/Line® shapefiles and convert them to GeoJSON
+---------------------------------------------------------------
 
-(Optional) Load the 'voter\_reg' database
------------------------------------------
+    ./3get-shapefiles-geojson.bash
 
-    ./3load-voter-reg.bash /path/to/voter_reg_zip_files
+This script downloads shapefiles (and documentation) from the [US Census
+Bureau's
+TIGER/Line®](http://www.census.gov/geo/maps-data/data/tiger-line.html)
+FTP site. The compressed shapefiles are uncompressed and stored in
+/gisdata. They are also converted to GeoJSON and compressed GeoJSON. The
+resulting data structure is
 
-If you have the voter registration database ZIP archives, this script
-will load some of the data into PostgreSQL. After loading the data, the
-script will create a PostgreSQL dump file '/gisdata/voter\_reg.pgdump'.
-This is mostly for my use at the moment; we may not need it for the
-actual application.
+-   /gisdata/ftp2.census.gov: downloaded TIGER/Line® shapefiles
+    (compressed)
+-   /gisdata/shapefiles: uncompressed shapefiles
+-   /gisdata/GeoJSON: uncompressed GeoJSON
+-   /gisdata/GeoJSONzip: compressed GeoJSON
 
-Download the TIGER districts
-----------------------------
-
-    ./4download-tiger-districts.bash
-
-This script will create the following databases for the non-superuser
-database role:
-
--   congress\_districts: US Congressional districts for the whole USA
--   state\_legislature\_upper\_districts: Oregon State Senate districts
--   state\_legislature\_lower\_districts: Oregon State House districts
--   unified\_school\_districts: Unified school districts for Oregon
--   elementary\_school\_districts: Elementary school districts for
-    Oregon
--   secondary\_school\_districts: Secondary school districts for Oregon
-
-First, the script will download the shapefiles required to populate the
-databases from the [US Census Bureau's TIGER/Line® FTP
-site](http://www.census.gov/geo/maps-data/data/tiger-line.html). The
-first time you run it, it will take longer because it's downloading, but
-subsequent runs will only download if the file has changed on the FTP
-site.
-
-After the download, the script unpacks the ZIP archives and imports them
-into the databases. You can ignore any ERROR messages this script
-generates. After the databases are populated, a PostgreSQL dump file is
-created for each one in '/gisdata'.
-
-Download the TIGER/Line® geocoder data.
----------------------------------------
+Create the 'geocoder' database.
+-------------------------------
 
 This is a two-step process. For more details, see [*PostGIS in Action,
 Second Edition*](http://www.manning.com/obe2/).
 
-### Create the download scripts.
+### 1. Create the download scripts.
 
-    ./5make-geocoder-download-scripts.bash
+    ./4setup-geocoder-download.bash
 
 This executes some code in the PostGIS package to create two scripts in
 '/gisdata'. One script, called 'national.bash', downloads nationwide
 state and county shapefiles. The second, called 'oregon.bash', downloads
 detailed shapefiles for Oregon.
 
-### Edit and run the download scripts.
+### 2. Run the download scripts.
 
     sudo su - postgres
     cd /gisdata
-    ./6run-geocoder-scripts.bash
+    bash/run-geocoder-scripts.bash
 
 This puts you into the PostgreSQL ***Linux*** maintenance account. The
-scripts require this 'superuser' privilege to run.
-
-#### Edit the download scripts
-
-The '6run-geocoder-scripts.bash' script will first ask you to edit the
-two 'bash' scripts to set the ***PostgreSQL*** password for the
-'postgres' role - you should have set this password in the 'Configure
-PostgreSQL' step. You'll see a line
-
-    export PGPASSWORD=yourpasswordhere
-
-Change all instances of 'yourpasswordhere' to the PostgreSQL password
-for the 'postgres' role. Notes:
-
--   There may be more than one instance; you need to change all of them.
--   If your password contains special characters, you'll need to enclose
-    it in single quotes. For example,
-
-<!-- -->
-
-    export PGPASSWORD='duck,duck:g00s3'
-
-#### Run the download scripts.
-
-After you've edited them, '6run-geocoder-scripts.bash' will run the
-download scripts. Like previous download scripts, they will run longer
-the first time while downloading the raw data from the TIGER/Line® FTP
-site. Later ones will only download changed ZIP archives. Once the
-'geocoder' database is populated, the script will create a PostgreSQL
-dump of it in '/gisdata/geocoder.pgdump'.
+scripts require this 'superuser' privilege to run. The scripts download
+a few TIGER/Line® shapefiles not already downloaded and populate the
+'geocoder' database.
