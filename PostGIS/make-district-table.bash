@@ -12,6 +12,6 @@
 export i=${1}
 SOURCE=`find shapefiles/${i} -name '*.shp'`
 DEST=`echo ${i} | tr [:upper:] [:lower:]`
-shp2pgsql -s 4269 -d -I ${SOURCE} districts.${DEST} \
+shp2pgsql -s 4269 -W LATIN1 -d -I ${SOURCE} districts.${DEST} \
   | psql -d geocoder 2>&1 \
   | grep -v ^INSERT
