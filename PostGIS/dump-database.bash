@@ -11,5 +11,6 @@
 
 sudo mkdir -p /gisdata/pgdump
 sudo chown -R postgres:postgres /gisdata
-sudo su - postgres -c "pg_dump -Fc -Z9 -f /gisdata/pgdump/${1}.pgdump ${1}"
+sudo su - postgres -c \
+  "pg_dump -v -E UTF8 -Fc -Z9 -f /gisdata/pgdump/${1}.backup ${1}"
 sudo chown -R ${USER}:${USER} /gisdata
