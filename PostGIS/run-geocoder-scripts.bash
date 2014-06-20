@@ -11,7 +11,7 @@
 
 # generate the scripts
 cd /gisdata # just in case
-psql -f sql/make-scripts.sql
+psql -d geocoder -f sql/make-scripts.sql
 
 pushd bash
 for i in 'national' 'oregon'
