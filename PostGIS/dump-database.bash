@@ -12,5 +12,7 @@
 sudo mkdir -p /gisdata/pgdump
 sudo chown -R postgres:postgres /gisdata
 sudo su - postgres -c \
+  "vacuumdb -z -v -f ${i}"
+sudo su - postgres -c \
   "pg_dump -v -E UTF8 -Fc -Z9 -f /gisdata/pgdump/${1}.backup ${1}"
 sudo chown -R ${USER}:${USER} /gisdata
