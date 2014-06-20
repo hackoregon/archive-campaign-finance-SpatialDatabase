@@ -21,12 +21,23 @@
 # This should work on Ubuntu; I'll test in the VM
 # This might work on MacOS X if you have all the dependencies; someone test ;-)
 
+# create workspace
 sudo mkdir -p /gisdata
 sudo mkdir -p /gisdata/shapefiles
 sudo mkdir -p /gisdata/GeoJSON
 sudo mkdir -p /gisdata/GeoJSONzip
 sudo chown -R ${USER}:${USER} /gisdata
-chmod +x /gisdata/*.bash
+
+# copy the scripts to the workspace
+for i in \
+  download-shapefiles.bash \
+  make-district-table.bash \
+  make-geojson.bash \
+  create-geocoder-database.bash
+do
+  cp ${i} /gisdata/bash
+done
+chmod +x /gisdata/bash/*.bash
 cd /gisdata
 
 # Grab documentation
@@ -52,6 +63,12 @@ do
 done
 popd
 
+# create 'geocoder' database
+bash/create-geocoder-database.bash
+
+# we download all of the shapefiles but only create tables in the 'districts'
+# schema for shapefiles that aren't used by the geocoder!
+
 # national
 # States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
 # Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
@@ -59,26 +76,12 @@ popd
 # ZIP Code Tabulation Areas: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ZCTA5/
 for i in STATE COUNTY CD ZCTA5
 do
-  wget \
-    --quiet \
-    --no-parent \
-    --relative \
-    --recursive \
-    --level=1 \
-    --accept=zip \
-    --reject=html \
-    --mirror \
-    "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_us*zip" 
-  mkdir -p shapefiles/${i}
-  unzip -n -u -d shapefiles/${i} \
-    "ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_us*zip" 
-  SOURCE=`find shapefiles/${i} -name '*.shp'`
-  DEST=`echo ${SOURCE}|sed 's/shp/geojson/'|sed 's/shapefiles/GeoJSON/'`
-  mkdir -p GeoJSON/${i}
-
-  # this step will throw errors if the GeoJSON is already done, saving time
-  ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
-  zip -9ur GeoJSONzip/${i}.zip ${DEST}
+  bash/download-shapefiles.bash ${i} "us"
+  bash/make-geojson.bash ${i}
+done
+for i in CD ZCTA5
+do
+  bash/make-district-table.bash ${i}
 done
 
 # state of Oregon
@@ -92,48 +95,25 @@ done
 # Places: ftp://ftp2.census.gov/geo/tiger/TIGER2013/PLACE/
 # Tabulation Blocks: ftp://ftp2.census.gov/geo/tiger/TIGER2013/TABBLOCK/
 # Tracts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/TRACT/
-for i in SLDU SLDL ELSD SCSD UNSD BG COUSUB PLACE TABBLOCK TRACT
-do
-  wget \
-    --quiet \
-    --no-parent \
-    --relative \
-    --recursive \
-    --level=1 \
-    --accept=zip \
-    --reject=html \
-    --mirror \
-    "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_41*zip" 
-  mkdir -p shapefiles/${i}
-  unzip -n -u -d shapefiles/${i} \
-    "ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_41*zip" 
-  SOURCE=`find shapefiles/${i} -name '*.shp'`
-  DEST=`echo ${SOURCE}|sed 's/shp/geojson/'|sed 's/shapefiles/GeoJSON/'`
-  mkdir -p GeoJSON/${i}
 
-  # this step will throw errors if the GeoJSON is already done, saving time
-  ogr2ogr -f GeoJSON ${DEST} ${SOURCE}
-  zip -9ur GeoJSONzip/${i}.zip ${DEST}
-done
-
-# Oregon counties - geocoder uses them so we prefetch the shapefiles
+# Oregon counties
 # Addresses: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ADDR/
 # Edges: ftp://ftp2.census.gov/geo/tiger/TIGER2013/EDGES/
 # Faces: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FACES/
 # Feature Names: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FEATNAMES/
-for i in ADDR EDGES FACES FEATNAMES 
+for i in SLDU SLDL ELSD SCSD UNSD BG COUSUB PLACE TABBLOCK TRACT \
+  ADDR EDGES FACES FEATNAMES 
 do
-  wget \
-    --quiet \
-    --no-parent \
-    --relative \
-    --recursive \
-    --level=1 \
-    --accept=zip \
-    --reject=html \
-    --mirror \
-    "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_41*zip" 
+  bash/download-shapefiles.bash ${i} "41"
 done
+for i in SLDU SLDL ELSD SCSD UNSD
+do
+  bash/make-geojson.bash ${i}
+  bash/make-district-table.bash ${i}
+done
+
+# optimize
+psql -d geocoder -c "VACUUM VERBOSE ANALYZE;"
 
 # dump the file sizes
 pushd ftp2.census.gov/geo/tiger/TIGER2013
