@@ -14,7 +14,7 @@ cd /gisdata # just in case
 psql -d geocoder -f sql/make-scripts.sql
 
 pushd bash
-for i in 'national' 'oregon'
+for i in 'national' 'states'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
