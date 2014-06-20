@@ -19,8 +19,7 @@ sudo chown -R ${USER}:${USER} /gisdata
 # copy the code to /gisdata
 cp run-geocoder-scripts.bash /gisdata/bash
 chmod +x /gisdata/bash/run-geocoder-scripts.bash
-sed "s/znmeb/${USER}/g" create-geocoder-database.sql \
-  > /gisdata/sql/create-geocoder-database.sql
+cp make-scripts.sql /gisdata/sql
 
 # change owner to 'postgres' - the generated scripts have to run as 'postgres'
 sudo chown -R postgres:postgres /gisdata

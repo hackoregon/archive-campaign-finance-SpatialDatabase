@@ -9,9 +9,9 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# create database and generate the scripts
+# generate the scripts
 cd /gisdata # just in case
-psql -f sql/create-geocoder-database.sql
+psql -f sql/make-scripts.sql
 
 pushd bash
 for i in 'national' 'oregon'
@@ -26,5 +26,6 @@ do
 done
 popd
 
+# optimize
 psql -d geocoder -c "SELECT install_missing_indexes();"
 psql -d geocoder -c "VACUUM VERBOSE ANALYZE;"
