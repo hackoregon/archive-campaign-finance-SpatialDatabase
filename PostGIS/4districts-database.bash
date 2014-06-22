@@ -21,26 +21,16 @@
 # This should work on Ubuntu; I'll test in the VM
 # This might work on MacOS X if you have all the dependencies; someone test ;-)
 
-# create 'districts' schema in 'geocoder' database
-for i in
-  "DROP SCHEMA IF EXISTS districts CASCADE;" \
-  "CREATE SCHEMA districts AUTHORIZATION ${USER};"
-do
-  sudo su - postgres -c "psql -d geocoder -c '${i}'"
-done
+# create 'districts' schema in 'districts' database
+./create-districts-database.bash
 
 # create workspace
 sudo mkdir -p /gisdata
-sudo mkdir -p /gisdata/shapefiles
-sudo mkdir -p /gisdata/GeoJSON
-sudo mkdir -p /gisdata/GeoJSONzip
 sudo chown -R ${USER}:${USER} /gisdata
 
 # copy the scripts to the workspace
 for i in \
-  download-shapefiles.bash \
-  make-district-table.bash \
-  make-geojson.bash
+  make-table.bash
 do
   cp ${i} /gisdata/bash
 done
@@ -72,47 +62,16 @@ do
 done
 popd
 
-# national
-# States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
-# Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
-# Congressional districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/CD/
-# ZIP Code Tabulation Areas: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ZCTA5/
-for i in STATE COUNTY CD ZCTA5
+for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD
 do
-  bash/make-geojson-and-table.bash ${i} "us"
-done
-
-# state of Oregon
-# State Senators: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDU/
-# State Representatives: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SLDL/
-# Elementary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ELSD/
-# Secondary School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/SCSD/
-# Unified School Districts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/UNSD/
-# Block Groups: ftp://ftp2.census.gov/geo/tiger/TIGER2013/BG/
-# County Subdivisions: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUSUB/
-# Places: ftp://ftp2.census.gov/geo/tiger/TIGER2013/PLACE/
-# Tabulation Blocks: ftp://ftp2.census.gov/geo/tiger/TIGER2013/TABBLOCK/
-# Tracts: ftp://ftp2.census.gov/geo/tiger/TIGER2013/TRACT/
-
-# Oregon counties
-# Addresses: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ADDR/
-# Edges: ftp://ftp2.census.gov/geo/tiger/TIGER2013/EDGES/
-# Faces: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FACES/
-# Feature Names: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FEATNAMES/
-for i in SLDU SLDL ELSD SCSD UNSD
-do
-  bash/make-geojson-and-table.bash ${i} "41"
+  bash/make-table.bash ${i}
 done
 
 # optimize
-psql -d geocoder -c "VACUUM VERBOSE ANALYZE;"
+psql -d districts -c "VACUUM VERBOSE ANALYZE;"
 
 # dump the file sizes
 pushd ftp2.census.gov/geo/tiger/TIGER2013
 echo "Compressed shapefile sizes"
-du -sh *
-popd
-pushd GeoJSONzip
-echo "Compressed GeoJSON sizes"
 du -sh *
 popd
