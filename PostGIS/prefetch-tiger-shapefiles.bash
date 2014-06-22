@@ -16,7 +16,7 @@ cd /gisdata
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD \
   PLACE COUSUB TRACT TABBLOCK BG FACES FEATNAMES EDGES ADDR
 do
-  wget \
+  time wget \
     --quiet \
     --no-parent \
     --relative \
@@ -29,7 +29,7 @@ do
 done
 
 # state ZIP codes - geocoder needs them
-wget 
+time wget 
   --quiet \
   --no-parent \
   --relative \
