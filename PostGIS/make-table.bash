@@ -10,23 +10,18 @@
 #
 
 export i=${1}
-export pattern=${2}
-wget \
-  --quiet \
-  --no-parent \
-  --relative \
-  --recursive \
-  --level=1 \
-  --accept=zip \
-  --reject=html \
-  --mirror \
-  "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
+cd /gisdata
 
-# GeoJSON zipped
-rm -fr temp; mkdir temp
-SOURCE="ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
+rm -fr temp; mkdir temp # work area for unzipped shapefiles
+SOURCE="ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_*zip" 
 unzip -d temp ${SOURCE}
 SHAPEFILES=`find temp -name '*.shp'`
+TABLE=`echo ${i} | tr [:upper:] [:lower:]`
+echo making table ${TABLE}
+time shp2pgsql -s 4269 -W LATIN1 -d -I ${SHAPEFILES} districts.${TABLE} \
+  | psql -d districts 2>&1 \
+  | grep -v ^INSERT
+exit
 mkdir -p GeoJSON/${i}
 GEOJSON=`echo ${SHAPEFILES} | sed 's/shp/geojson/'`
 ogr2ogr -f GeoJSON ${GEOJSON} ${SHAPEFILES}
@@ -35,8 +30,3 @@ mkdir -p GeoJSONzip
 pushd temp
 zip -9ur ../GeoJSONzip/${i}.zip ${GEOJSON}
 popd
-
-TABLE=`echo ${i} | tr [:upper:] [:lower:]`
-shp2pgsql -s 4269 -W LATIN1 -d -I ${SHAPEFILES} districts.${TABLE} \
-  | psql -d geocoder 2>&1 \
-  | grep -v ^INSERT
