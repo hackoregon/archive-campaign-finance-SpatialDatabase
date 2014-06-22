@@ -21,3 +21,22 @@ wget \
   --reject=html \
   --mirror \
   "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
+
+# GeoJSON zipped
+rm -fr temp; mkdir temp
+SOURCE="ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
+unzip -d temp ${SOURCE}
+SHAPEFILES=`find temp -name '*.shp'`
+mkdir -p GeoJSON/${i}
+GEOJSON=`echo ${SHAPEFILES} | sed 's/shp/geojson/'`
+ogr2ogr -f GeoJSON ${GEOJSON} ${SHAPEFILES}
+
+mkdir -p GeoJSONzip
+pushd temp
+zip -9ur ../GeoJSONzip/${i}.zip ${GEOJSON}
+popd
+
+TABLE=`echo ${i} | tr [:upper:] [:lower:]`
+shp2pgsql -s 4269 -W LATIN1 -d -I ${SHAPEFILES} districts.${TABLE} \
+  | psql -d geocoder 2>&1 \
+  | grep -v ^INSERT
