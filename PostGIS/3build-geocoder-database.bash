@@ -16,9 +16,12 @@ sudo mkdir -p /gisdata/sql
 sudo mkdir -p /gisdata/bash
 sudo chown -R ${USER}:${USER} /gisdata
 
+# drop and re-create the geocoder database
+./create-geocoder-database.bash
+
 # copy the code to /gisdata
 cp run-geocoder-scripts.bash /gisdata/bash
-chmod +x /gisdata/bash/run-geocoder-scripts.bash
+chmod +x /gisdata/bash/*.bash
 cp make-scripts.sql /gisdata/sql
 
 # change owner to 'postgres' - the generated scripts have to run as 'postgres'
