@@ -14,7 +14,11 @@ cd /gisdata # just in case
 psql -d geocoder -f sql/make-scripts.sql
 
 # pre-fetch all the shapefiles!
-grep -h ^wget bash/national.bash bash/states.bash > bash/prefetch.bash
+grep -h ^wget \
+  bash/national.bash \
+  bash/states.bash \
+  | sed 's;--no-parent;--quiet --no-parent;' \
+  > bash/prefetch.bash
 chmod +x bash/prefetch.bash
 bash/prefetch.bash
 
