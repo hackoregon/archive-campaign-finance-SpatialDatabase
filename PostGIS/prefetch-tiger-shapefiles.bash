@@ -31,8 +31,8 @@ do
 done
 
 # state ZIP codes - geocoder needs them
-echo fetching ZCTA5
-time wget 
+echo fetching state ZCTA5
+time wget \
   --quiet \
   --no-parent \
   --relative \
