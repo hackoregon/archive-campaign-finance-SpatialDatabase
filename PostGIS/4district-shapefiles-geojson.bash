@@ -21,6 +21,14 @@
 # This should work on Ubuntu; I'll test in the VM
 # This might work on MacOS X if you have all the dependencies; someone test ;-)
 
+# create 'districts' schema in 'geocoder' database
+for i in
+  "DROP SCHEMA IF EXISTS districts CASCADE;" \
+  "CREATE SCHEMA districts AUTHORIZATION ${USER};"
+do
+  sudo su - postgres -c "psql -d geocoder -c '${i}'"
+done
+
 # create workspace
 sudo mkdir -p /gisdata
 sudo mkdir -p /gisdata/shapefiles
@@ -32,12 +40,13 @@ sudo chown -R ${USER}:${USER} /gisdata
 for i in \
   download-shapefiles.bash \
   make-district-table.bash \
-  make-geojson.bash \
-  create-geocoder-database.bash
+  make-geojson.bash
 do
   cp ${i} /gisdata/bash
 done
 chmod +x /gisdata/bash/*.bash
+
+# now go over to the data area
 cd /gisdata
 
 # Grab documentation
@@ -63,12 +72,6 @@ do
 done
 popd
 
-# create 'geocoder' database
-bash/create-geocoder-database.bash
-
-# we download all of the shapefiles but only create tables in the 'districts'
-# schema for shapefiles that aren't used by the geocoder!
-
 # national
 # States: ftp://ftp2.census.gov/geo/tiger/TIGER2013/STATE/
 # Counties: ftp://ftp2.census.gov/geo/tiger/TIGER2013/COUNTY/
@@ -76,12 +79,7 @@ bash/create-geocoder-database.bash
 # ZIP Code Tabulation Areas: ftp://ftp2.census.gov/geo/tiger/TIGER2013/ZCTA5/
 for i in STATE COUNTY CD ZCTA5
 do
-  bash/download-shapefiles.bash ${i} "us"
-  bash/make-geojson.bash ${i}
-done
-for i in CD ZCTA5
-do
-  bash/make-district-table.bash ${i}
+  bash/make-geojson-and-table.bash ${i} "us"
 done
 
 # state of Oregon
@@ -101,15 +99,9 @@ done
 # Edges: ftp://ftp2.census.gov/geo/tiger/TIGER2013/EDGES/
 # Faces: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FACES/
 # Feature Names: ftp://ftp2.census.gov/geo/tiger/TIGER2013/FEATNAMES/
-for i in SLDU SLDL ELSD SCSD UNSD BG COUSUB PLACE TABBLOCK TRACT \
-  ADDR EDGES FACES FEATNAMES 
-do
-  bash/download-shapefiles.bash ${i} "41"
-done
 for i in SLDU SLDL ELSD SCSD UNSD
 do
-  bash/make-geojson.bash ${i}
-  bash/make-district-table.bash ${i}
+  bash/make-geojson-and-table.bash ${i} "41"
 done
 
 # optimize
@@ -118,14 +110,6 @@ psql -d geocoder -c "VACUUM VERBOSE ANALYZE;"
 # dump the file sizes
 pushd ftp2.census.gov/geo/tiger/TIGER2013
 echo "Compressed shapefile sizes"
-du -sh *
-popd
-pushd shapefiles
-echo "Uncompressed shapefile sizes"
-du -sh *
-popd
-pushd GeoJSON
-echo "Uncompressed GeoJSON sizes"
 du -sh *
 popd
 pushd GeoJSONzip
