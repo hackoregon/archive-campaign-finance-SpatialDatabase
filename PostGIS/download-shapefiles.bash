@@ -21,7 +21,3 @@ wget \
   --reject=html \
   --mirror \
   "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
-
-mkdir -p shapefiles/${i}
-unzip -n -u -d shapefiles/${i} \
-  "ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_2013_${pattern}*zip" 
