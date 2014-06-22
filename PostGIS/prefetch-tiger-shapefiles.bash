@@ -9,7 +9,44 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+# go to workspace
 cd /gisdata
+
+# TIGER/Line® documentation:
+#    http://www.census.gov/geo/education/howtos.html
+# Folder names:
+#   ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+# Dependencies: GDAL - Geospatial Data Abstraction Library 1.11.0 or later
+#               wget
+#               unzip
+#               zip
+#
+# This should work on Ubuntu; I'll test in the VM
+# This might work on MacOS X if you have all the dependencies; someone test ;-)
+
+# Grab documentation
+echo fetching documentation
+mkdir -p docs
+pushd docs
+for i in \
+  http://en.flossmanuals.net/openstreetmap/_booki/openstreetmap/openstreetmap.pdf \
+  http://download.osgeo.org/qgis/doc/manual/qgis-1.0.0_a-gentle-gis-introduction_en.pdf \
+  http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-UserGuide-en.pdf \
+  http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-QGISTrainingManual-en.pdf \
+  http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-PyQGISDeveloperCookbook-en.pdf \
+  http://postgis.net/stuff/postgis-2.1.pdf \
+  http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2013/TGRSHP2013_TechDoc.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/Downloading_TIGERLine_Shp.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/2_Opening.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/Downloading_AFFData.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
+  http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
+  http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+do
+  wget -q -nc ${i}
+done
+popd
 
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD \
   PLACE COUSUB TRACT TABBLOCK BG FACES FEATNAMES EDGES ADDR
