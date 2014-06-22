@@ -16,6 +16,7 @@ cd /gisdata
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD \
   PLACE COUSUB TRACT TABBLOCK BG FACES FEATNAMES EDGES ADDR
 do
+  echo fetching ${i}
   time wget \
     --quiet \
     --no-parent \
@@ -26,9 +27,11 @@ do
     --reject=html \
     --mirror \
     "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl*zip" 
+  echo ${i} fetched
 done
 
 # state ZIP codes - geocoder needs them
+echo fetching ZCTA5
 time wget 
   --quiet \
   --no-parent \
@@ -39,3 +42,4 @@ time wget
   --reject=html \
   --mirror \
   ftp://ftp2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010/tl_2010_[!u]*zip
+echo ZCTA5 fetched
