@@ -9,6 +9,10 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+sudo mkdir -p /gisdata
+sudo chown -R ${USER}:${USER} /gisdata
+cd /gisdata
+
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD \
   PLACE COUSUB TRACT TABBLOCK BG FACES FEATNAMES EDGES ADDR
 do
