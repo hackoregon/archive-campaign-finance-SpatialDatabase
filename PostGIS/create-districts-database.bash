@@ -19,6 +19,8 @@ done
 for i in \
   "CREATE EXTENSION IF NOT EXISTS postgis;" \
   "CREATE EXTENSION IF NOT EXISTS postgis_topology;" \
+  "DROP SCHEMA IF EXISTS districts CASCADE;" \
+  "CREATE SCHEMA districts AUTHORIZATION ${USER};"
 do
   sudo su - postgres -c "psql -d districts -c '${i}'"
 done
