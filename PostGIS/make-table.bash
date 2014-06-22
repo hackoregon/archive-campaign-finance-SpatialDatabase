@@ -9,24 +9,32 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-export i=${1}
 cd /gisdata
 
-rm -fr temp; mkdir temp # work area for unzipped shapefiles
-SOURCE="ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl_*zip" 
-unzip -d temp ${SOURCE}
-SHAPEFILES=`find temp -name '*.shp'`
-TABLE=`echo ${i} | tr [:upper:] [:lower:]`
-echo making table ${TABLE}
-time shp2pgsql -s 4269 -W LATIN1 -d -I ${SHAPEFILES} districts.${TABLE} \
-  | psql -d districts 2>&1 \
-  | grep -v ^INSERT
-exit
-mkdir -p GeoJSON/${i}
-GEOJSON=`echo ${SHAPEFILES} | sed 's/shp/geojson/'`
-ogr2ogr -f GeoJSON ${GEOJSON} ${SHAPEFILES}
-
-mkdir -p GeoJSONzip
-pushd temp
-zip -9ur ../GeoJSONzip/${i}.zip ${GEOJSON}
-popd
+TABLE=`echo ${1} | tr [:upper:] [:lower:]`
+ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2013/${1} -name '*.zip'` 
+FIRST=1
+for i in ${ARCHIVES}
+do
+  rm -fr temp; mkdir temp
+  unzip -d temp ${i}
+  SHAPEFILES=`find temp -name '*.shp'`
+  if [ ${FIRST} ]
+  then
+    time shp2pgsql \
+      -s 4269 \
+      -d \
+      -I \
+      -W LATIN1 \
+      ${SHAPEFILES} districts.${TABLE} \
+      | psql -d districts 2>&1 | grep -v ^INSERT
+    unset FIRST
+  else
+    time shp2pgsql \
+      -s 4269 \
+      -a \
+      -W LATIN1 \
+      ${SHAPEFILES} districts.${TABLE} \
+      | psql -d districts 2>&1 | grep -v ^INSERT
+  fi
+done
