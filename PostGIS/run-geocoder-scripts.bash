@@ -34,8 +34,8 @@ for i in 'or_geocoder' 'us_geocoder'
 do
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" national.bash
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" ${i}.bash
-  ./national.bash 2>&1 | grep -v ^INSERT | tee ${i}-national.log
-  ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
+  time ./national.bash 2>&1 | grep -v ^INSERT | tee ${i}-national.log
+  time ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
 done
 popd
 
