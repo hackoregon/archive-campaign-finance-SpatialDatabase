@@ -33,7 +33,7 @@ do
 done
 
 # optimize
-psql -d districts -c "VACUUM VERBOSE ANALYZE;"
+psql -d districts -c "VACUUM ANALYZE;"
 
 # dump the file sizes
 pushd ftp2.census.gov/geo/tiger/TIGER2013
