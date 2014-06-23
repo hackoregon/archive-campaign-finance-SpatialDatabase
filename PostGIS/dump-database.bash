@@ -12,7 +12,7 @@
 sudo mkdir -p /gisdata/pgdump
 sudo chown -R postgres:postgres /gisdata
 sudo su - postgres -c \
-  "vacuumdb -z -v ${1} 2>&1 | tee /gisdata/pgdump/${1}-vacuumdb.log"
+  "time vacuumdb --analyze ${1} 2>&1 | tee /gisdata/pgdump/${1}-vacuumdb.log"
 sudo su - postgres -c \
-  "pg_dump -v -E UTF8 -Fc -Z9 -f /gisdata/pgdump/${1}.backup ${1} 2>&1 | tee /gisdata/pgdump/${1}-pg_dump.log"
+  "pg_dump -E UTF8 -Fc -Z9 -f /gisdata/pgdump/${1}.backup ${1} 2>&1 | tee /gisdata/pgdump/${1}-pg_dump.log"
 sudo chown -R ${USER}:${USER} /gisdata
