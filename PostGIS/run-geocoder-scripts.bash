@@ -17,7 +17,7 @@ psql -d geocoder -f sql/make-scripts.sql
 bash/prefetch-tiger-shapefiles.bash
 
 pushd bash
-for i in 'national' 'states'
+for i in 'national' 'or_geocoder' 'us_geocoder'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
@@ -25,10 +25,19 @@ do
   sed -i 's;export PGUSER=postgres;;' ${i}.bash
   sed -i 's;export PGPASSWORD=.*$;;' ${i}.bash
   chmod +x ${i}.bash
+done
+for i in 'or_geocoder' 'us_geocoder'
+do
+  sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" national.bash
+  sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" ${i}.bash
+  ./national.bash 2>&1 | grep -v ^INSERT | tee national.log
   ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
 done
 popd
 
 # optimize
-psql -d geocoder -c "SELECT install_missing_indexes();"
-psql -d geocoder -c "VACUUM VERBOSE ANALYZE;"
+for i in or us
+do
+  psql -d ${i}_geocoder -c "SELECT install_missing_indexes();"
+  psql -d ${i}_geocoder -c "VACUUM VERBOSE ANALYZE;"
+done
