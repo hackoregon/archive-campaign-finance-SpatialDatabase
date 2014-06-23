@@ -11,7 +11,7 @@
 
 # generate the scripts
 cd /gisdata # just in case
-psql -d geocoder -f sql/make-scripts.sql
+psql -d us_geocoder -f sql/make-scripts.sql
 
 # pre-fetch all the shapefiles!
 bash/prefetch-tiger-shapefiles.bash
