@@ -36,7 +36,7 @@ do
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" ${i}.bash
   time ./national.bash 2>&1 | grep -v ^INSERT | tee ${i}-national.log
   time ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
-  psql -d ${i}_geocoder -c "SELECT install_missing_indexes();"
-  time psql -d ${i}_geocoder -c "VACUUM ANALYZE;"
+  psql -d ${i} -c "SELECT install_missing_indexes();"
+  time psql -d ${i} -c "VACUUM ANALYZE;"
 done
 popd
