@@ -22,10 +22,12 @@ sudo su - postgres -c \
   "psql -c 'CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;'"
 
 # create a non-root user - can can log in and create schemas/tables only!
+sudo su - postgres -c "dropdb ${NAME}"
+sudo su - postgres -c "dropuser ${NAME}"
 sudo su - postgres -c "createuser ${NAME}"
 
 # create a 'home' database for the user
 sudo su - postgres -c "createdb --owner=${NAME} ${NAME}"
 
 # VACUUM!
-time sudo su - postgres -c "vacuumdb --all --analyze --verbose"
+time sudo su - postgres -c "vacuumdb --all --analyze"
