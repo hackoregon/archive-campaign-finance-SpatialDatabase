@@ -28,4 +28,4 @@ sudo su - postgres -c "createuser ${NAME}"
 sudo su - postgres -c "createdb --owner=${NAME} ${NAME}"
 
 # VACUUM!
-sudo su - postgres -c "vacuumdb --all --analyze --verbose"
+time sudo su - postgres -c "vacuumdb --all --analyze --verbose"
