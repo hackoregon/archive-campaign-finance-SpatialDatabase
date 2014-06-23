@@ -9,13 +9,14 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-for i in \
-  "DROP DATABASE IF EXISTS or_geocoder;" \
-  "CREATE DATABASE or_geocoder WITH OWNER ${USER};" \
-  "DROP DATABASE IF EXISTS us_geocoder;" \
-  "CREATE DATABASE us_geocoder WITH OWNER ${USER};"
+for j in or us
 do
-  sudo su - postgres -c "psql -d postgres -c '${i}'"
+  for i in \
+    "DROP DATABASE IF EXISTS ${j}_geocoder;" \
+    "CREATE DATABASE ${j}_geocoder WITH OWNER ${USER};" \
+  do
+    sudo su - postgres -c "psql -d postgres -c '${i}'"
+  done
 done
 
 for j in or us
