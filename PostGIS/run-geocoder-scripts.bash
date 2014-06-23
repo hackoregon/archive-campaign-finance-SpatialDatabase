@@ -17,6 +17,8 @@ psql -d geocoder -f sql/make-scripts.sql
 bash/prefetch-tiger-shapefiles.bash
 
 pushd bash
+
+# common edits for all scripts
 for i in 'national' 'or_geocoder' 'us_geocoder'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
@@ -26,11 +28,13 @@ do
   sed -i 's;export PGPASSWORD=.*$;;' ${i}.bash
   chmod +x ${i}.bash
 done
+
+# now change database names and run them
 for i in 'or_geocoder' 'us_geocoder'
 do
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" national.bash
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" ${i}.bash
-  ./national.bash 2>&1 | grep -v ^INSERT | tee national.log
+  ./national.bash 2>&1 | grep -v ^INSERT | tee ${i}-national.log
   ./${i}.bash 2>&1 | grep -v ^INSERT | tee ${i}.log
 done
 popd

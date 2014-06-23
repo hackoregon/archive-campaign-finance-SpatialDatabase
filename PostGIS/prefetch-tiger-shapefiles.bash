@@ -78,3 +78,16 @@ time wget \
   --mirror \
   ftp://ftp2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010/tl_2010_[!u]*zip
 echo ZCTA5 fetched
+
+echo fetching Oregon ACS databases
+time wget \
+  --quiet \
+  --no-parent \
+  --relative \
+  --recursive \
+  --level=1 \
+  --accept=zip \
+  --reject=html \
+  --mirror \
+  ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*_41.gdb.zip
+echo finished
