@@ -16,8 +16,8 @@ sudo mkdir -p /gisdata/sql
 sudo mkdir -p /gisdata/bash
 sudo chown -R ${USER}:${USER} /gisdata
 
-# drop and re-create the geocoder database
-./create-geocoder-database.bash
+# drop and re-create the geocoder databases
+./create-geocoder-databases.bash
 
 # copy the code to /gisdata
 cp run-geocoder-scripts.bash /gisdata/bash
