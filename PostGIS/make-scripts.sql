@@ -3,7 +3,7 @@
 \a
 SELECT loader_generate_nation_script('sh');
 \o
-\o /gisdata/bash/states.bash
+\o /gisdata/bash/us-geocoder.bash
 SELECT loader_generate_script(ARRAY[
   'AL',
   'AK',
@@ -63,4 +63,7 @@ SELECT loader_generate_script(ARRAY[
   'UM',
   'VI'
 ], 'sh');
+\o
+\o /gisdata/bash/or-geocoder.bash
+SELECT loader_generate_script(ARRAY['OR'], 'sh');
 \o
