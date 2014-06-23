@@ -43,5 +43,5 @@ popd
 for i in or us
 do
   psql -d ${i}_geocoder -c "SELECT install_missing_indexes();"
-  psql -d ${i}_geocoder -c "VACUUM VERBOSE ANALYZE;"
+  time psql -d ${i}_geocoder -c "VACUUM ANALYZE;"
 done
