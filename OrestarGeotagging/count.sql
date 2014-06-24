@@ -1,3 +1,8 @@
 ﻿\t
 \a
-SELECT COUNT(zip_code) FROM voter_reg.addresses WHERE rating IS NULL;
+SELECT COUNT(zip) FROM orestar.raw_committee_transactions 
+WHERE rating IS NULL 
+AND addr_line1 IS NOT NULL
+AND city IS NOT NULL
+AND state IS NOT NULL
+AND zip IS NOT NULL;
