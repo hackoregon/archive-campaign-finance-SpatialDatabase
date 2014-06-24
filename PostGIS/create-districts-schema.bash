@@ -10,17 +10,8 @@
 #
 
 for i in \
-  "DROP DATABASE IF EXISTS districts;" \
-  "CREATE DATABASE districts WITH OWNER ${USER};"
-do
-  sudo su - postgres -c "psql -d postgres -c '${i}'"
-done
-
-for i in \
-  "CREATE EXTENSION IF NOT EXISTS postgis;" \
-  "CREATE EXTENSION IF NOT EXISTS postgis_topology;" \
   "DROP SCHEMA IF EXISTS districts CASCADE;" \
   "CREATE SCHEMA districts AUTHORIZATION ${USER};"
 do
-  sudo su - postgres -c "psql -d districts -c '${i}'"
+  sudo su - postgres -c "psql -d us_geocoder -c '${i}'"
 done

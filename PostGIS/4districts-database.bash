@@ -9,8 +9,8 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# create 'districts' schema in 'districts' database
-./create-districts-database.bash
+# create 'districts' schema in 'us_geocoder' database
+./create-districts-schema.bash
 
 # create workspace
 sudo mkdir -p /gisdata
@@ -31,12 +31,3 @@ for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD
 do
   bash/make-table.bash ${i}
 done
-
-# optimize
-psql -d districts -c "VACUUM ANALYZE;"
-
-# dump the file sizes
-pushd ftp2.census.gov/geo/tiger/TIGER2013
-echo "Compressed shapefile sizes"
-du -sh *
-popd
