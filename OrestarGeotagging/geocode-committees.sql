@@ -3,21 +3,13 @@
 DROP TABLE IF EXISTS orestar.committee_addresses CASCADE;
 CREATE TABLE orestar.committee_addresses AS
 SELECT
-  tran_id,
-  normalize_address(concat_ws(' ',
-    replace(addr_line1, '*', ''),
-    COALESCE(addr_line2, ' '),
-    city,
-    state,
-    zip
-  )) AS addy
+  committee_id,
+  normalize_address(treasurer_mailing_address) AS addy
 FROM orestar.raw_committees
-WHERE addr_line1 IS NOT NULL
-AND city IS NOT NULL
-AND state IS NOT NULL
-AND zip IS NOT NULL;
+WHERE treasurer_mailing_address IS NOT NULL;
 
 -- geocode pass
 DROP TABLE IF EXISTS orestar.committee_geocodes CASCADE;
 CREATE TABLE orestar.committee_geocodes AS
-SELECT tran_id, geocode(addy) FROM orestar.committee_addresses;
+SELECT a.committee_id, g.rating, g.geomout
+FROM orestar.committee_addresses AS a, geocode(a.addy, 1) AS g;
