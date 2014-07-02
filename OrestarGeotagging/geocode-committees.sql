@@ -1,7 +1,7 @@
 
 -- address standardization pass
-DROP TABLE IF EXISTS orestar.stand_addresses CASCADE;
-CREATE TABLE orestar.stand_addresses AS
+DROP TABLE IF EXISTS orestar.committee_addresses CASCADE;
+CREATE TABLE orestar.committee_addresses AS
 SELECT
   tran_id,
   normalize_address(concat_ws(' ',
@@ -11,13 +11,13 @@ SELECT
     state,
     zip
   )) AS addy
-FROM orestar.raw_committee_transactions
+FROM orestar.raw_committees
 WHERE addr_line1 IS NOT NULL
 AND city IS NOT NULL
 AND state IS NOT NULL
 AND zip IS NOT NULL;
 
 -- geocode pass
-DROP TABLE IF EXISTS orestar.geocodes CASCADE;
-CREATE TABLE orestar.geocodes AS
-SELECT tran_id, geocode(addy) FROM orestar.stand_addresses;
+DROP TABLE IF EXISTS orestar.committee_geocodes CASCADE;
+CREATE TABLE orestar.committee_geocodes AS
+SELECT tran_id, geocode(addy) FROM orestar.committee_addresses;
