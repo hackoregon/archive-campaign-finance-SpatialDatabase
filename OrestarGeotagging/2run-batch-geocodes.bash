@@ -9,8 +9,5 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-while [ `psql -q -d us_geocoder < count.sql` -gt 0 ]
-do
-  time psql -d us_geocoder < batch-geocode.sql
-  psql -q -d us_geocoder < count.sql
-done
+/usr/bin/time psql -d us_geocoder -f ./geocode-committees.sql 
+/usr/bin/time psql -d us_geocoder -f ./geocode-transactions.sql 
