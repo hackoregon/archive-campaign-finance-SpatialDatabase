@@ -21,6 +21,8 @@ sudo su - postgres -c \
 
 # create a non-root user - can can log in and create schemas/tables only!
 sudo su - postgres -c "dropdb ${USER}"
+sudo su - postgres -c "dropdb or_geocoder"
+sudo su - postgres -c "dropdb us_geocoder"
 sudo su - postgres -c "dropuser ${USER}"
 sudo su - postgres -c "createuser ${USER}"
 
