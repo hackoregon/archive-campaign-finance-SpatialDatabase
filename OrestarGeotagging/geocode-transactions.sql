@@ -11,7 +11,7 @@ SELECT
     state,
     zip
   )) AS addy
-FROM orestar.raw_committee_tranactions
+FROM orestar.raw_committee_transactions
 WHERE addr_line1 IS NOT NULL
 AND city IS NOT NULL
 AND state IS NOT NULL
