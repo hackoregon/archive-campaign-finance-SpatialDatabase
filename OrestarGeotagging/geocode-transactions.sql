@@ -15,7 +15,7 @@ FROM orestar.raw_committee_transactions
 WHERE addr_line1 IS NOT NULL
 AND city IS NOT NULL
 AND state IS NOT NULL
-AND zip IS NOT NULL LIMIT 1000;
+AND zip IS NOT NULL;
 
 -- geocode pass
 DROP TABLE IF EXISTS orestar.tran_geocodes CASCADE;
