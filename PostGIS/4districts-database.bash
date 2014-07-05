@@ -18,6 +18,7 @@ sudo chown -R ${USER}:${USER} /gisdata
 
 # copy the scripts to the workspace
 for i in \
+  voting-districts.bash \
   make-table.bash
 do
   cp ${i} /gisdata/bash
@@ -31,3 +32,6 @@ for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD
 do
   bash/make-table.bash ${i}
 done
+
+# add in the voting districts that we have
+bash/voting-districts.bash

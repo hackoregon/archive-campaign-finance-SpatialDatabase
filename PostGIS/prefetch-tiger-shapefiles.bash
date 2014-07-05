@@ -91,3 +91,16 @@ time wget \
   --mirror \
   ftp://ftp2.census.gov/geo/tiger/TIGER_DP/2012ACS/*_41.gdb.zip
 echo finished
+
+echo fetching voting districts
+time wget \
+  --quiet \
+  --no-parent \
+  --relative \
+  --recursive \
+  --level=1 \
+  --accept=zip \
+  --reject=html \
+  --mirror \
+  ftp://ftp2.census.gov/geo/tiger/TIGER2012/VTD/tl_2012_*_vtd10.zip
+echo finished
