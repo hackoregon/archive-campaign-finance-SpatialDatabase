@@ -1,11 +1,12 @@
 UPDATE orestar.raw_committee_transactions
 SET
-(addy, geomout, rating, lon, lat) = (
+(addy, geomout, rating, lon, lat, srid) = (
   (g).addy,
   (g).geomout,
   COALESCE((g).rating, 9999),
   ST_X((g).geomout),
-  ST_Y((g).geomout)
+  ST_Y((g).geomout),
+  '4269'
 )
 FROM (SELECT * FROM orestar.raw_committee_transactions
 WHERE rating IS NULL 

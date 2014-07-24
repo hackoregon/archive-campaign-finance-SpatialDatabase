@@ -29,6 +29,13 @@ for i in \
   "CREATE INDEX ON raw_committee_transactions (city);" \
   "CREATE INDEX ON raw_committee_transactions (state);" \
   "CREATE INDEX ON raw_committee_transactions (zip);" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN addy norm_addy;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN geomout geometry;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN rating integer;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN lon double precision;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN lat double precision;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN srid text;" \
+  "ALTER TABLE raw_committee_transactions ADD COLUMN tran_id serial NOT NULL PRIMARY KEY;" \
   "ALTER TABLE raw_committee_transactions OWNER TO ${USER};" \
   "ALTER TABLE raw_committee_transactions SET SCHEMA orestar;" \
   "VACUUM ANALYZE orestar.raw_committee_transactions;"
