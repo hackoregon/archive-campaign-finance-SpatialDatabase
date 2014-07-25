@@ -14,6 +14,7 @@ sudo mkdir -p ${OUT}
 sudo chown -R ${USER}:${USER} ${OUT}
 
 # dump the schema
+rm -fr /gisdata/pgdump/orestar.backup
 pg_dump \
   --jobs 8 \
   --format directory \
