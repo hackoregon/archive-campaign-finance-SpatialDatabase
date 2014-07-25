@@ -15,5 +15,5 @@ sudo su - postgres -c \
   "time vacuumdb --analyze ${1}"
 sudo rm -fr /gisdata/pgdump/${1}.backup
 sudo su - postgres -c \
-  "time pg_dump -E UTF8 -Fd -Z9 -j 8 -f /gisdata/pgdump/${1}.backup ${1}"
+  "time pg_dump -E UTF8 -Fd -Z9 -j 3 -f /gisdata/pgdump/${1}.backup ${1}"
 sudo chown -R ${USER}:${USER} /gisdata
