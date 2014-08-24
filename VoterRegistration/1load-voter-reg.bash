@@ -54,5 +54,5 @@ zip -9m VoterReg.zip \
   DistrictPrecinctDetail.txt \
   Counties.csv \
   VRsplits.csv \
-  CIsplits.csv \
+  CIDPD.csv \
   Districts.csv

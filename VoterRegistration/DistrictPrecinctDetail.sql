@@ -12,8 +12,8 @@ ALTER TABLE voter_reg.district_precinct_detail OWNER TO znmeb;
 \copy voter_reg.district_precinct_detail from '/gisdata/DistrictPrecinctDetail.txt';
 
 -- clean and index the table
-DROP TABLE IF EXISTS voter_reg.cisplits CASCADE;
-CREATE TABLE voter_reg.cisplits AS
+DROP TABLE IF EXISTS voter_reg.cidpd CASCADE;
+CREATE TABLE voter_reg.cidpd AS
 SELECT DISTINCT
   upper(trim(both ' ' from county)) AS county,
   upper(trim(both ' ' from precinct_name)) AS precinct_name,
@@ -23,12 +23,12 @@ SELECT DISTINCT
   upper(trim(both ' ' from district_name)) AS district_name,
   upper(trim(both ' ' from district_type)) AS district_type
 FROM voter_reg.district_precinct_detail;
-CREATE INDEX ON voter_reg.cisplits (county);
-CREATE INDEX ON voter_reg.cisplits (precinct_name);
-CREATE INDEX ON voter_reg.cisplits (precinct);
-CREATE INDEX ON voter_reg.cisplits (split);
-CREATE INDEX ON voter_reg.cisplits (district_code);
-CREATE INDEX ON voter_reg.cisplits (district_name);
-CREATE INDEX ON voter_reg.cisplits (district_type);
-ALTER TABLE voter_reg.cisplits OWNER TO znmeb;
-\copy (select * from voter_reg.cisplits) to '/gisdata/CIsplits.csv' (format csv, header);
+CREATE INDEX ON voter_reg.cidpd (county);
+CREATE INDEX ON voter_reg.cidpd (precinct_name);
+CREATE INDEX ON voter_reg.cidpd (precinct);
+CREATE INDEX ON voter_reg.cidpd (split);
+CREATE INDEX ON voter_reg.cidpd (district_code);
+CREATE INDEX ON voter_reg.cidpd (district_name);
+CREATE INDEX ON voter_reg.cidpd (district_type);
+ALTER TABLE voter_reg.cidpd OWNER TO znmeb;
+\copy (select * from voter_reg.cidpd) to '/gisdata/CIDPD.csv' (format csv, header);
