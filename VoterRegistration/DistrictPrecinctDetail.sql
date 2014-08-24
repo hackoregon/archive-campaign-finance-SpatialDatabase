@@ -31,4 +31,4 @@ CREATE INDEX ON voter_reg.cisplits (district_code);
 CREATE INDEX ON voter_reg.cisplits (district_name);
 CREATE INDEX ON voter_reg.cisplits (district_type);
 ALTER TABLE voter_reg.cisplits OWNER TO znmeb;
-\copy (select * from voter_reg.cisplits) to '/gisdata/cisplits.csv' (format csv, header);
+\copy (select * from voter_reg.cisplits) to '/gisdata/CIsplits.csv' (format csv, header);
