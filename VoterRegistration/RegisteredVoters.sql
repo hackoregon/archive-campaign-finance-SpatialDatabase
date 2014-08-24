@@ -1,4 +1,5 @@
--- raw registered voter list
+
+-- get raw registered voter list
 DROP TABLE IF EXISTS voter_reg.registered_voters CASCADE;
 CREATE TABLE voter_reg.registered_voters (
   voter_id text,
@@ -59,8 +60,8 @@ ALTER TABLE voter_reg.counties OWNER TO znmeb;
 \copy (select * from voter_reg.counties) to '/gisdata/Counties.csv' (format csv, header);
 
 -- extract distinct 'splits'
-DROP TABLE IF EXISTS voter_reg.splits CASCADE;
-CREATE TABLE voter_reg.splits AS
+DROP TABLE IF EXISTS voter_reg.vrsplits CASCADE;
+CREATE TABLE voter_reg.vrsplits AS
 SELECT DISTINCT
   upper(trim(both ' ' from state)) AS state,
   upper(trim(both ' ' from county)) AS county,
@@ -71,20 +72,8 @@ SELECT DISTINCT
 FROM voter_reg.registered_voters
 GROUP BY state, county, precinct_name, precinct, split
 ORDER BY voters DESC;
-ALTER TABLE voter_reg.splits OWNER TO znmeb;
-\copy (select * from voter_reg.splits) to '/gisdata/Splits.csv' (format csv, header);
-
--- extract 'splits' from district_precinct_detail as a check
-DROP TABLE IF EXISTS voter_reg.dpdsplits CASCADE;
-CREATE TABLE voter_reg.dpdsplits AS
-SELECT DISTINCT
-  upper(trim(both ' ' from county)) AS county,
-  upper(trim(both ' ' from precinct_name)) AS precinct_name,
-  upper(trim(both ' ' from precinct)) AS precinct,
-  upper(trim(both ' ' from split)) AS split
-FROM voter_reg.district_precinct_detail;
-ALTER TABLE voter_reg.dpdsplits OWNER TO znmeb;
-\copy (select * from voter_reg.dpdsplits) to '/gisdata/DPDSplits.csv' (format csv, header);
+ALTER TABLE voter_reg.vrsplits OWNER TO znmeb;
+\copy (select * from voter_reg.vrsplits) to '/gisdata/VRsplits.csv' (format csv, header);
 
 -- extract distinct districts
 DROP TABLE IF EXISTS voter_reg.districts CASCADE;
@@ -94,7 +83,7 @@ SELECT DISTINCT
   upper(trim(both ' ' from d.district_name)) AS district_name,
   upper(trim(both ' ' from d.district_type)) AS district_type,
   SUM(s.voters) AS voters
-FROM voter_reg.district_precinct_detail AS d, voter_reg.splits AS s
+FROM voter_reg.cidpd AS d, voter_reg.vrsplits AS s
 WHERE upper(trim(both ' ' from d.county)) = s.county 
 AND upper(trim(both ' ' from d.precinct_name)) = s.precinct_name
 AND upper(trim(both ' ' from d.precinct)) = s.precinct 
@@ -119,7 +108,10 @@ FROM voter_reg.registered_voters
 GROUP BY address, county, precinct, precinct_name, split;
 ALTER TABLE voter_reg.addresses OWNER TO znmeb;
 CREATE INDEX ON voter_reg.addresses (address);
-CREATE INDEX ON voter_reg.addresses (county, precinct, precinct_name, split);
+CREATE INDEX ON voter_reg.addresses (county);
+CREATE INDEX ON voter_reg.addresses (precinct);
+CREATE INDEX ON voter_reg.addresses (precinct_name);
+CREATE INDEX ON voter_reg.addresses (split);
 
 -- add columns for geocoder
 ALTER TABLE voter_reg.addresses ADD COLUMN addy norm_addy;
