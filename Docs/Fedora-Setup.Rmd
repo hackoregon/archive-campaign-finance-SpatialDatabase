@@ -1,0 +1,82 @@
+---
+title: "Fedora Setup Instructions"
+author: "M. Edward (Ed) Borasky"
+date: June 18, 2014
+---
+
+The current setup is for [Fedora Linux 20](https://fedoraproject.org/), which is what I run most of the time. I do have a Windows laptop and will be porting this setup to it as part of the Hack Oregon project. I'm looking for a Mac user to port this to Macintosh laptops. If you use another Linux distro on your desktop, open an issue on Github and I'll do the port for you.
+
+***Important note***: in PostgreSQL on Linux, there are two sets of users, Linux users and PostgreSQL database users. And PostgreSQL database users are called ***roles*** in PostgreSQL jargon. For most Linux desktop installations, things are easier if they are mapped one-to-one. That is, the PostgreSQL role 'znmeb' is the same person as the Linux user 'znmeb'.
+
+When PostgreSQL is installed and configured, there will be a 'postgres' Linux user. And there will be a 'postgres' database role (user) inside the PostgreSQL database. The 'postgres' database role has 'superuser' powers - it can create other roles and in general mess with stuff inside PostgreSQL just like 'root' can on a Linux system. So for practical usage you'll ususally want to create a non-superuser role for day-to-day work.
+
+***Note on '/gisdata'***: Several of the scripts use a globally-recognized area '/gisdata' for storing and manipulating data. This originated with the geocoder data described below, but it's useful as a data store for other purposes.
+
+## Install the Linux packages
+
+```bash
+./1yum-install-dependencies.bash
+```
+
+This will install 
+
+* [PostgreSQL](http://www.postgresql.org/),
+* [pgAdmin](http://www.pgadmin.org/index.php),
+* [PostGIS](http://postgis.net/),
+* [QGIS](http://www.qgis.org/en/site/),
+* some [OpenStreetMap](www.openstreetmap.org/) tools, and
+* any dependencies.
+
+You only have to run this once. It won't hurt anything if you run it again.
+
+## Configure PostgreSQL
+
+```bash
+./2configure-postgresql.bash
+```
+
+This script
+
+* creates the PostgreSQL data area on the hard drive,
+* enables the PostgreSQL server to start at boot time,
+* starts the PostgreSQL server,
+* installs the 'adminpack' and 'plpgsql' extensions,
+* creates a non-superuser database user and a 'home' database for that user, and
+* performs a '[VACUUM ANALYZE](http://www.postgresql.org/docs/9.3/static/sql-vacuum.html)' to optimize the database.
+
+The database user and home database will have the same name as your Linux login. For example, if your login is 'charlie' you'll have a database login of 'charlie' and there will be a home database named 'charlie'. You only have to run this script once, but it won't hurt anything if you run it again.
+
+## Download the TIGER/Line® shapefiles and convert them to GeoJSON
+
+```bash
+./3get-shapefiles-geojson.bash
+```
+
+This script downloads shapefiles (and documentation) from the [US Census Bureau's TIGER/Line®](http://www.census.gov/geo/maps-data/data/tiger-line.html) FTP site. The compressed shapefiles are uncompressed and stored in /gisdata. They are also converted to GeoJSON and compressed GeoJSON. The resulting data structure is
+
+* /gisdata/ftp2.census.gov: downloaded TIGER/Line® shapefiles (compressed)
+* /gisdata/shapefiles: uncompressed shapefiles
+* /gisdata/GeoJSON: uncompressed GeoJSON
+* /gisdata/GeoJSONzip: compressed GeoJSON
+
+## Create the 'geocoder' database.
+
+This is a two-step process. For more details, see [_PostGIS in Action, Second Edition_](http://www.manning.com/obe2/).
+
+### 1. Create the download scripts.
+
+```bash
+./4setup-geocoder-download.bash
+```
+
+This executes some code in the PostGIS package to create two scripts in '/gisdata'. One script, called 'national.bash', downloads nationwide state and county shapefiles. The second, called 'oregon.bash', downloads detailed shapefiles for Oregon.
+
+### 2. Run the download scripts.
+
+```bash
+sudo su - postgres
+cd /gisdata
+bash/run-geocoder-scripts.bash
+```
+
+This puts you into the PostgreSQL ***Linux*** maintenance account. The scripts require this 'superuser' privilege to run. The scripts download a few TIGER/Line® shapefiles not already downloaded and populate the 'geocoder' database.
