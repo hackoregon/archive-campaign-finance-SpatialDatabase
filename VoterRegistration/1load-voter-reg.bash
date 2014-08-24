@@ -53,6 +53,6 @@ rm VoterReg.zip # clean slate
 zip -9m VoterReg.zip \
   DistrictPrecinctDetail.txt \
   Counties.csv \
-  Splits.csv \
+  VRsplits.csv \
   CIsplits.csv \
   Districts.csv
