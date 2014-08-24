@@ -83,7 +83,7 @@ SELECT DISTINCT
   upper(trim(both ' ' from d.district_name)) AS district_name,
   upper(trim(both ' ' from d.district_type)) AS district_type,
   SUM(s.voters) AS voters
-FROM voter_reg.cisplits AS d, voter_reg.vrsplits AS s
+FROM voter_reg.cidpd AS d, voter_reg.vrsplits AS s
 WHERE upper(trim(both ' ' from d.county)) = s.county 
 AND upper(trim(both ' ' from d.precinct_name)) = s.precinct_name
 AND upper(trim(both ' ' from d.precinct)) = s.precinct 
