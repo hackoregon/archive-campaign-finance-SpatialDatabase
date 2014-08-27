@@ -13,18 +13,9 @@ export OUT=/gisdata # where the cleaned files live
 sudo mkdir -p ${OUT}
 sudo chown -R ${USER}:${USER} ${OUT}
 
-# dump the schema
-rm -fr /gisdata/pgdump/orestar.backup
-pg_dump \
-  --jobs 3 \
-  --format directory \
-  --section pre-data \
-  --section data \
-  --section post-data \
-  --encoding UTF8 \
-  --verbose \
-  --file "/gisdata/pgdump/orestar.backup" \
-  --schema "orestar" "us_geocoder"
+# dump the ORESTAR schema
+time pg_dump -F p -O -E UTF8 -Z 9 -n orestar \
+  -f /gisdata/pgdump/orestar.sql.gz us_geocoder
 
 # dump the whole database
 ../PostGIS/dump-database.bash us_geocoder
