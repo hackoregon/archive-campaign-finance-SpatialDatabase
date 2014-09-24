@@ -21,7 +21,6 @@ sudo chown -R ${USER}:${USER} /gisdata
 
 # copy the code to /gisdata
 cp run-geocoder-scripts.bash /gisdata/bash
-cp prefetch-tiger-shapefiles.bash /gisdata/bash
 chmod +x /gisdata/bash/*.bash
 cp make-scripts.sql /gisdata/sql
 
