@@ -9,7 +9,7 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-for j in or us
+for j in or
 do
   for i in \
     "DROP DATABASE IF EXISTS ${j}_geocoder;" \
@@ -19,7 +19,7 @@ do
   done
 done
 
-for j in or us
+for j in or
 do
   for i in \
     "CREATE EXTENSION IF NOT EXISTS postgis;" \
