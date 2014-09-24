@@ -9,10 +9,6 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-sudo postgresql-setup initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-
 # install the extensions
 sudo su - postgres -c \
   "psql -c 'CREATE EXTENSION IF NOT EXISTS adminpack;'"
