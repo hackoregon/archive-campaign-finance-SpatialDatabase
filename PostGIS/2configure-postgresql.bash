@@ -9,12 +9,6 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# install the extensions
-sudo su - postgres -c \
-  "psql -c 'CREATE EXTENSION IF NOT EXISTS adminpack;'"
-sudo su - postgres -c \
-  "psql -c 'CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;'"
-
 # create a non-root user - can can log in and create schemas/tables only!
 sudo su - postgres -c "dropdb ${USER}"
 sudo su - postgres -c "dropdb or_geocoder"
