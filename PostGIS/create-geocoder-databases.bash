@@ -26,7 +26,6 @@ do
     "CREATE EXTENSION IF NOT EXISTS postgis_topology;" \
     "CREATE EXTENSION IF NOT EXISTS fuzzystrmatch;" \
     "CREATE EXTENSION IF NOT EXISTS postgis_tiger_geocoder;" \
-    "CREATE EXTENSION IF NOT EXISTS address_standardizer;" \
     "GRANT USAGE ON SCHEMA tiger TO PUBLIC;" \
     "GRANT USAGE ON SCHEMA tiger_data TO PUBLIC;" \
     "GRANT SELECT, REFERENCES, TRIGGER ON ALL TABLES IN SCHEMA tiger TO PUBLIC;" \
