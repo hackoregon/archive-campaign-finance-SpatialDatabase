@@ -11,13 +11,14 @@
 
 # generate the scripts
 cd /gisdata # just in case
-psql -d us_geocoder -f sql/make-scripts.sql
+psql -d or_geocoder -f sql/make-scripts.sql
 
 pushd bash
 
 # common edits for all scripts
 for i in 'national' 'or_geocoder'
 do
+  sed -i 's;2013;2014;' ${i}.bash
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
   sed -i 's;export PGHOST=localhost;;' ${i}.bash
