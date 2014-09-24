@@ -13,13 +13,10 @@
 cd /gisdata # just in case
 psql -d us_geocoder -f sql/make-scripts.sql
 
-# pre-fetch all the shapefiles!
-bash/prefetch-tiger-shapefiles.bash
-
 pushd bash
 
 # common edits for all scripts
-for i in 'national' 'or_geocoder' 'us_geocoder'
+for i in 'national' 'or_geocoder'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
@@ -30,7 +27,7 @@ do
 done
 
 # now change database names and run them
-for i in 'or_geocoder' 'us_geocoder'
+for i in 'or_geocoder'
 do
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" national.bash
   sed -i "s;export PGDATABASE=.*$;export PGDATABASE=${i};" ${i}.bash
