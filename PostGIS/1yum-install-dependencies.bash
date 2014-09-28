@@ -11,6 +11,7 @@
 
 sudo yum update -y
 sudo yum install -y \
+  perl-Regexp-Assemble \
   qgis \
   spatialite-gui \
   spatialite-tools \
