@@ -21,6 +21,7 @@ pushd bash
 # common edits for all scripts
 for i in 'national' 'or_geocoder' 'us_geocoder'
 do
+  sed -i 's;2013;2014;' ${i}.bash
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
   sed -i 's;export PGHOST=localhost;;' ${i}.bash
