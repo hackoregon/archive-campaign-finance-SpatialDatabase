@@ -15,7 +15,7 @@ cd /gisdata
 # TIGER/Line® documentation:
 #    http://www.census.gov/geo/education/howtos.html
 # Folder names:
-#   ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+#   ftp://ftp2.census.gov/geo/tiger/TIGER2014/2014-FolderNames-Defined.pdf
 # Dependencies: GDAL - Geospatial Data Abstraction Library 1.11.0 or later
 #               wget
 #               unzip
@@ -35,14 +35,14 @@ for i in \
   http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-QGISTrainingManual-en.pdf \
   http://docs.qgis.org/2.2/pdf/en/QGIS-2.2-PyQGISDeveloperCookbook-en.pdf \
   http://postgis.net/stuff/postgis-2.1.pdf \
-  http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2013/TGRSHP2013_TechDoc.pdf \
+  http://www.census.gov/geo/maps-data/data/pdfs/tiger/tgrshp2014/TGRSHP2014_TechDoc.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/Downloading_TIGERLine_Shp.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/2_Opening.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/Downloading_AFFData.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/JoiningTIGERshp_with_AFFdata.pdf \
   http://www.census.gov/geo/education/pdfs/tiger/AFF_TIGERLine_Joining_Presentation.pdf \
   http://www.census.gov/geo/education/pdfs/brochures/Geocoding.pdf \
-  ftp://ftp2.census.gov/geo/tiger/TIGER2013/2013-FolderNames-Defined.pdf
+  ftp://ftp2.census.gov/geo/tiger/TIGER2014/2014-FolderNames-Defined.pdf
 do
   wget -q -nc ${i}
 done
@@ -61,7 +61,7 @@ do
     --accept=zip \
     --reject=html \
     --mirror \
-    "ftp://ftp2.census.gov/geo/tiger/TIGER2013/${i}/tl*zip" 
+    "ftp://ftp2.census.gov/geo/tiger/TIGER2014/${i}/tl*zip" 
   echo ${i} fetched
 done
 

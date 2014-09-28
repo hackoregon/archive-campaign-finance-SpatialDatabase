@@ -12,7 +12,7 @@
 cd /gisdata
 
 TABLE=`echo ${1} | tr [:upper:] [:lower:]`
-ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2013/${1} -name '*.zip'` 
+ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2014/${1} -name '*.zip'` 
 FIRST=1
 for i in ${ARCHIVES}
 do
