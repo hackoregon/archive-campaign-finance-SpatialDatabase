@@ -14,7 +14,7 @@ cd /gisdata # just in case
 psql -d us_geocoder -f sql/make-scripts.sql
 
 # pre-fetch all the shapefiles!
-bash/prefetch-tiger-shapefiles.bash
+bash/prefetch-tiger-shapefiles.bash 2>&1 | tee prefetch.log
 
 pushd bash
 
