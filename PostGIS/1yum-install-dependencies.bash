@@ -11,6 +11,7 @@
 
 sudo yum update -y
 sudo yum install -y \
+  npm \
   perl-Regexp-Assemble \
   qgis \
   spatialite-gui \
@@ -20,4 +21,5 @@ sudo yum install -y \
   postgis \
   postgis-docs \
   postgis-utils
+npm install -g topojson
 sudo ./install-pagc-address-standardizer.bash
