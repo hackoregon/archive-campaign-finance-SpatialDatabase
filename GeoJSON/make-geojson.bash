@@ -57,7 +57,7 @@ do
     echo "Made ${ZIPFILE}"
 
     # make TopoJSON
-    topojson -o ${TOPOJSON} --shapefile-encoding utf8  -- temp.shp
+    topojson -o ${TOPOJSON} --properties --shapefile-encoding utf8  -- temp.shp
     mv ${TOPOJSON} /gisdata/TopoJSON/
     echo "Made /gisdata/TopoJSON/${TOPOJSON}"
     
