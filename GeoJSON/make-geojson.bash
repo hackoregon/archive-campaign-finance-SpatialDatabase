@@ -11,25 +11,85 @@
 
 sudo chown -R ${USER}:${USER} /gisdata
 cd /gisdata
+mkdir -p /gisdata/GeoJSON
+mkdir -p /gisdata/TopoJSON
 mkdir -p /gisdata/ZippedGeoJSON
 
 # 'Political' entities
-for i in STATE CD COUNTY ZCTA5 SLDU SLDL UNSD SCSD ELSD
+for i in \
+  ftp2.census.gov/geo/tiger/TIGER2014/STATE \
+  ftp2.census.gov/geo/tiger/TIGER2014/CD \
+  ftp2.census.gov/geo/tiger/TIGER2014/COUNTY \
+  ftp2.census.gov/geo/tiger/TIGER2014/SLDU \
+  ftp2.census.gov/geo/tiger/TIGER2014/SLDL \
+  ftp2.census.gov/geo/tiger/TIGER2014/UNSD \
+  ftp2.census.gov/geo/tiger/TIGER2014/SCSD \
+  ftp2.census.gov/geo/tiger/TIGER2014/ELSD \
+  ftp2.census.gov/geo/tiger/TIGER2012/VTD \
+  ftp2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010
 do
 
   # all the zipfiles in the entity
-  export ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2014/${i} -name '*.zip'`
+  export ARCHIVES=`find ${i} -name '*.zip'`
   for j in ${ARCHIVES}
   do
     rm -fr temp; mkdir temp
     unzip -d temp ${j}
     pushd temp
+
+    # create file name symbols
     export SHAPEFILE=`find . -name '*.shp' | sed 's;./;;'`
+    if [ "${SHAPEFILE}" == "tl_2010_us_zcta510.shp" ]
+    then
+      echo "tl_2010_us_zcta510.shp is a bad news bear; skipping"
+      break
+    fi
     export GEOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.geojson;'`
-    ogr2ogr -f GeoJSON -t_srs EPSG:4326 ${GEOJSON} ${SHAPEFILE}
+    export TOPOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.topojson;'`
     export ZIPFILE="/gisdata/ZippedGeoJSON/${GEOJSON}.zip"
+
+    # reproject the shapefile - TopoJSON wants that done for it
+    ogr2ogr -f 'ESRI Shapefile' -t_srs EPSG:4326 temp.shp ${SHAPEFILE}
+    ogr2ogr -f GeoJSON ${GEOJSON} temp.shp
     zip -9u ${ZIPFILE} ${GEOJSON}
+    mv ${GEOJSON} /gisdata/GeoJSON/
+    echo "Made /gisdata/GeoJSON/${GEOJSON}"
     echo "Made ${ZIPFILE}"
+
+    # make TopoJSON
+    topojson -o ${TOPOJSON}  -- temp.shp
+    mv ${TOPOJSON} /gisdata/TopoJSON/
+    echo "Made /gisdata/TopoJSON/${TOPOJSON}"
+    
     popd
   done
+done
+
+# ZCTA by state - US file is so big it croaks topojson
+export ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010 -name '*.zip' | grep -v '_us_'`
+for j in ${ARCHIVES}
+do
+  rm -fr temp; mkdir temp
+  unzip -d temp ${j}
+  pushd temp
+
+  # create file name symbols
+  export SHAPEFILE=`find . -name '*.shp' | sed 's;./;;'`
+  export GEOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.geojson;'`
+  export TOPOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.topojson;'`
+  export ZIPFILE="/gisdata/ZippedGeoJSON/${GEOJSON}.zip"
+
+  # reproject the shapefile - TopoJSON wants that done for it
+  ogr2ogr -f 'ESRI Shapefile' -t_srs EPSG:4326 temp.shp ${SHAPEFILE}
+  ogr2ogr -f GeoJSON ${GEOJSON} temp.shp
+  zip -9u ${ZIPFILE} ${GEOJSON}
+  mv ${GEOJSON} /gisdata/GeoJSON/
+  echo "Made ${ZIPFILE}"
+
+  # make TopoJSON
+  topojson -o ${TOPOJSON}  -- temp.shp
+  mv ${TOPOJSON} /gisdata/TopoJSON/
+  echo "Made ${TOPOJSON}"
+  
+  popd
 done
