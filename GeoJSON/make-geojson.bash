@@ -42,7 +42,7 @@ do
     if [ "${SHAPEFILE}" == "tl_2010_us_zcta510.shp" ]
     then
       echo "tl_2010_us_zcta510.shp is a bad news bear; skipping"
-      break
+      continue
     fi
     export GEOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.geojson;'`
     export TOPOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.topojson;'`
@@ -52,9 +52,9 @@ do
     ogr2ogr -f 'ESRI Shapefile' -t_srs EPSG:4326 temp.shp ${SHAPEFILE}
     ogr2ogr -f GeoJSON ${GEOJSON} temp.shp
     zip -9u ${ZIPFILE} ${GEOJSON}
+    echo "Made ${ZIPFILE}"
     mv ${GEOJSON} /gisdata/GeoJSON/
     echo "Made /gisdata/GeoJSON/${GEOJSON}"
-    echo "Made ${ZIPFILE}"
 
     # make TopoJSON
     topojson -o ${TOPOJSON} --properties --shapefile-encoding utf8  -- temp.shp
