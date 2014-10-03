@@ -42,6 +42,7 @@ do
     if [ "${SHAPEFILE}" == "tl_2010_us_zcta510.shp" ]
     then
       echo "tl_2010_us_zcta510.shp is a bad news bear; skipping"
+      popd
       continue
     fi
     export GEOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.geojson;'`
