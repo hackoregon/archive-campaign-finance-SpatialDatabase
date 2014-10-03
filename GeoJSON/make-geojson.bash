@@ -64,32 +64,3 @@ do
     popd
   done
 done
-
-# ZCTA by state - US file is so big it croaks topojson
-export ARCHIVES=`find ftp2.census.gov/geo/tiger/TIGER2010/ZCTA5/2010 -name '*.zip' | grep -v '_us_'`
-for j in ${ARCHIVES}
-do
-  rm -fr temp; mkdir temp
-  unzip -d temp ${j}
-  pushd temp
-
-  # create file name symbols
-  export SHAPEFILE=`find . -name '*.shp' | sed 's;./;;'`
-  export GEOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.geojson;'`
-  export TOPOJSON=`echo ${SHAPEFILE} | sed 's;.shp;.topojson;'`
-  export ZIPFILE="/gisdata/ZippedGeoJSON/${GEOJSON}.zip"
-
-  # reproject the shapefile - TopoJSON wants that done for it
-  ogr2ogr -f 'ESRI Shapefile' -t_srs EPSG:4326 temp.shp ${SHAPEFILE}
-  ogr2ogr -f GeoJSON ${GEOJSON} temp.shp
-  zip -9u ${ZIPFILE} ${GEOJSON}
-  mv ${GEOJSON} /gisdata/GeoJSON/
-  echo "Made ${ZIPFILE}"
-
-  # make TopoJSON
-  topojson -o ${TOPOJSON}  -- temp.shp
-  mv ${TOPOJSON} /gisdata/TopoJSON/
-  echo "Made ${TOPOJSON}"
-  
-  popd
-done
