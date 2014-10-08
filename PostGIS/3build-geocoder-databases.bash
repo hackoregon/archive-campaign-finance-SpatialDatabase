@@ -16,12 +16,14 @@ sudo mkdir -p /gisdata/sql
 sudo mkdir -p /gisdata/bash
 sudo chown -R ${USER}:${USER} /gisdata
 
+# Prefetch all the shapefiles
+./prefetch-tiger-shapefiles.bash
+
 # drop and re-create the geocoder databases
 ./create-geocoder-databases.bash
 
 # copy the code to /gisdata
 cp run-geocoder-scripts.bash /gisdata/bash
-cp prefetch-tiger-shapefiles.bash /gisdata/bash
 chmod +x /gisdata/bash/*.bash
 cp make-scripts.sql /gisdata/sql
 

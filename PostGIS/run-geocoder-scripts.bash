@@ -12,16 +12,13 @@
 # generate the scripts
 cd /gisdata # just in case
 psql -d us_geocoder -f sql/make-scripts.sql
-
-# pre-fetch all the shapefiles!
-bash/prefetch-tiger-shapefiles.bash 2>&1 | tee prefetch.log
-
 pushd bash
 
 # common edits for all scripts
 for i in 'national' 'or_geocoder' 'us_geocoder'
 do
   sed -i 's;export PGBIN=/usr/pgsql-9.0/bin;export PGBIN=/usr/bin;' ${i}.bash
+  sed -i 's;^wget;\# wget;' ${i}.bash
   sed -i 's;--no-parent;--quiet --no-parent;' ${i}.bash
   sed -i 's;export PGHOST=localhost;;' ${i}.bash
   sed -i 's;export PGUSER=postgres;;' ${i}.bash
