@@ -59,11 +59,7 @@ SELECT loader_generate_script(ARRAY[
   'WV',
   'WI',
   'WY',
-  'AS',
-  'GU',
-  'MP',
   'PR',
-  'UM',
-  'VI'
+  'UM'
 ], 'sh');
 \o
