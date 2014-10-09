@@ -9,8 +9,8 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# create 'districts' schema in 'us_geocoder' database
-./create-districts-schema.bash
+# create 'districts' schema in 'districts' database
+./create-districts-database.bash
 
 # create workspace
 sudo mkdir -p /gisdata
@@ -30,8 +30,8 @@ cd /gisdata
 
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD
 do
-  bash/make-table.bash ${i}
+  bash/make-table.bash ${i} 2>&1 | tee bash/${i}.log
 done
 
 # add in the voting districts that we have
-bash/voting-districts.bash
+bash/voting-districts.bash 2>&1 | tee bash/VTD.log

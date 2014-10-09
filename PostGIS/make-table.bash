@@ -23,11 +23,11 @@ do
   then
     time shp2pgsql \
       -s 4269 \
-      -d \
+      -c \
       -I \
       -W LATIN1 \
       ${SHAPEFILES} districts.${TABLE} \
-      | psql -d us_geocoder 2>&1 | grep -v ^INSERT
+      | psql -d districts 2>&1 | grep -v ^INSERT
     unset FIRST
   else
     time shp2pgsql \
@@ -35,7 +35,7 @@ do
       -a \
       -W LATIN1 \
       ${SHAPEFILES} districts.${TABLE} \
-      | psql -d us_geocoder 2>&1 | grep -v ^INSERT
+      | psql -d districts 2>&1 | grep -v ^INSERT
   fi
-  psql -d us_geocoder -c "VACUUM ANALYZE districts.${TABLE};"
+  psql -d districts -c "VACUUM ANALYZE districts.${TABLE};"
 done
