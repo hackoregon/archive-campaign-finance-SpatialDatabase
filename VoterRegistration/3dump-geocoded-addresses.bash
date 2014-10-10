@@ -25,5 +25,3 @@ pushd ${OUT}
 zip -9m ${OUT}/VoterReg.zip \
   Addresses.csv
 popd
-
-./dump-database.bash or_geocoder
