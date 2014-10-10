@@ -9,7 +9,10 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-for i in us_geocoder districts or_geocoder
+for i in \
+  or_geocoder \
+  districts \
+  us_geocoder
 do
   ./dump-database.bash ${i}
 done
