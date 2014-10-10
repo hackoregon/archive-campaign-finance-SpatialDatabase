@@ -26,7 +26,7 @@ done
 chmod +x /gisdata/bash/*.bash
 
 # now go over to the data area
-cd /gisdata
+pushd /gisdata
 
 for i in STATE COUNTY CD ZCTA5 SLDU SLDL ELSD SCSD UNSD
 do
@@ -35,3 +35,4 @@ done
 
 # add in the voting districts that we have
 bash/voting-districts.bash 2>&1 | tee bash/VTD.log
+popd
