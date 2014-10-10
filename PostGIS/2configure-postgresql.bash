@@ -23,6 +23,7 @@ sudo su - postgres -c \
 sudo su - postgres -c "dropdb ${USER}"
 sudo su - postgres -c "dropdb or_geocoder"
 sudo su - postgres -c "dropdb us_geocoder"
+sudo su - postgres -c "dropdb districts"
 sudo su - postgres -c "dropuser ${USER}"
 sudo su - postgres -c "createuser ${USER}"
 
