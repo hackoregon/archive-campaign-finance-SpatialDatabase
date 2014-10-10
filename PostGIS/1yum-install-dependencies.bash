@@ -22,4 +22,3 @@ sudo yum install -y \
   postgis-docs \
   postgis-utils
 sudo npm install -g topojson
-sudo ./install-pagc-address-standardizer.bash
