@@ -14,5 +14,5 @@ for i in \
   districts \
   us_geocoder
 do
-  ./dump-database.bash ${i}
+  ./dump-database.bash ${i} ${1}
 done

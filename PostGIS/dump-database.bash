@@ -12,8 +12,8 @@
 sudo mkdir -p /gisdata/pgdump
 sudo chown -R postgres:postgres /gisdata
 sudo su - postgres -c \
-  "vacuumdb --analyze ${1}"
+  "time vacuumdb --analyze ${1}"
 sudo rm -fr /gisdata/pgdump/${1}.backup
 sudo su - postgres -c \
-  "time pg_dump -F p -O -E UTF8 -Z 9 -f /gisdata/pgdump/${1}.sql.gz ${1}"
+  "time pg_dump -E UTF8 -F d -j ${2} -Z 9 -f /gisdata/pgdump/${1}.backup ${1}"
 sudo chown -R ${USER}:${USER} /gisdata
