@@ -37,7 +37,6 @@ sudo chown -R postgres:postgres /home/spatial
 sudo semanage fcontext -a -t postgresql_db_t "/home/spatial(/.*)?"
 sudo restorecon -R -v /home/spatial
 
-export HERE=`pwd`
 sudo su - postgres -c \
   "psql -c \"CREATE TABLESPACE spatial LOCATION '/home/spatial';\""
 sudo su - postgres -c "psql -c '\\db+'"
