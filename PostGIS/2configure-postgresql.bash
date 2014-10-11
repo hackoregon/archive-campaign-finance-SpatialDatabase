@@ -31,9 +31,17 @@ sudo su - postgres -c "createuser ${USER}"
 sudo su - postgres -c "createdb --owner=${USER} ${USER}"
 
 # create 'spatial' tablespace
+# https://docs.fedoraproject.org/en-US/Fedora/13/html/Managing_Confined_Services/sect-Managing_Confined_Services-PostgreSQL-Configuration_Examples.html
+sudo mkdir -p /home/spatial
+sudo chown -R postgres:postgres /home/spatial
+sudo semanage fcontext -a -t postgresql_db_t "/home/spatial(/.*)?"
+sudo restorecon -R -v /home/spatial
+
 export HERE=`pwd`
-#sudo su - postgres -c "psql -f ${HERE}/make-tablespace.sql"
-sudo ls -altr /home/spatial
+sudo su - postgres -c \
+  "psql -c \"CREATE TABLESPACE spatial LOCATION '/home/spatial';\""
+sudo su - postgres -c "psql -c '\\db+'"
+sudo ls -altrZ /home/spatial
 
 # VACUUM!
 time sudo su - postgres -c "vacuumdb --all --analyze"
