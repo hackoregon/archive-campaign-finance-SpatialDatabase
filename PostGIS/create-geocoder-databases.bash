@@ -13,7 +13,7 @@ for j in or us
 do
   for i in \
     "DROP DATABASE IF EXISTS ${j}_geocoder;" \
-    "CREATE DATABASE ${j}_geocoder WITH OWNER ${USER};"
+    "CREATE DATABASE ${j}_geocoder OWNER ${USER} TABLESPACE spatial;"
   do
     sudo su - postgres -c "psql -d postgres -c '${i}'"
   done

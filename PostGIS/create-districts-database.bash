@@ -11,7 +11,7 @@
 
 for i in \
   "DROP DATABASE IF EXISTS districts;" \
-  "CREATE DATABASE districts OWNER ${USER};"
+  "CREATE DATABASE districts OWNER ${USER} TABLESPACE spatial;"
 do
   sudo su - postgres -c "psql -d postgres -c '${i}'"
 done
