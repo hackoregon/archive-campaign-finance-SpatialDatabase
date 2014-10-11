@@ -30,5 +30,10 @@ sudo su - postgres -c "createuser ${USER}"
 # create a 'home' database for the user
 sudo su - postgres -c "createdb --owner=${USER} ${USER}"
 
+# create 'spatial' tablespace
+export HERE=`pwd`
+#sudo su - postgres -c "psql -f ${HERE}/make-tablespace.sql"
+sudo ls -altr /home/spatial
+
 # VACUUM!
 time sudo su - postgres -c "vacuumdb --all --analyze"
