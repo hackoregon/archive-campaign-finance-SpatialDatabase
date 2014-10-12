@@ -38,7 +38,7 @@ sudo su - postgres -c "bzip2 -dc ${1} | psql -d us_geocoder"
 # index tables to be geocoded
 for i in \
   "CREATE INDEX ON raw_committees (treasurer_mailing_address);" \
-  "ALTER TABLE raw_committees OWNER TO znmeb;" \
+  "ALTER TABLE raw_committees OWNER TO ${USER};" \
   "VACUUM ANALYZE raw_committees;" \
   "CREATE INDEX ON raw_committee_transactions (addr_line1);" \
   "CREATE INDEX ON raw_committee_transactions (city);" \
@@ -51,7 +51,7 @@ for i in \
   "ALTER TABLE raw_committee_transactions ADD COLUMN lat double precision;" \
   "ALTER TABLE raw_committee_transactions ADD COLUMN srid text;" \
   "ALTER TABLE raw_committee_transactions ADD COLUMN ztran_id serial NOT NULL PRIMARY KEY;" \
-  "ALTER TABLE raw_committee_transactions OWNER TO znmeb;" \
+  "ALTER TABLE raw_committee_transactions OWNER TO ${USER};" \
   "VACUUM ANALYZE raw_committee_transactions;"
 do
   sudo su - postgres -c "psql -d us_geocoder -c '${i}'"
