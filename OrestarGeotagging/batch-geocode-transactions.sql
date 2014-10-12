@@ -1,4 +1,4 @@
-UPDATE orestar.raw_committee_transactions
+UPDATE raw_committee_transactions
 SET
 (addy, geomout, rating, lon, lat, srid) = (
   (g).addy,
@@ -8,7 +8,7 @@ SET
   ST_Y((g).geomout),
   '4269'
 )
-FROM (SELECT * FROM orestar.raw_committee_transactions
+FROM (SELECT * FROM raw_committee_transactions
 WHERE rating IS NULL 
 AND addr_line1 IS NOT NULL
 AND city IS NOT NULL
@@ -25,4 +25,4 @@ LEFT JOIN LATERAL
   ), 1)
 AS g
 ON ((g).rating < 9999)
-WHERE a.tran_id = orestar.raw_committee_transactions.tran_id;
+WHERE a.ztran_id = raw_committee_transactions.ztran_id;

@@ -1,6 +1,6 @@
 ﻿\t
 \a
-SELECT COUNT(zip) FROM orestar.raw_committee_transactions 
+SELECT COUNT(zip) FROM raw_committee_transactions 
 WHERE rating IS NULL 
 AND addr_line1 IS NOT NULL
 AND city IS NOT NULL
