@@ -12,7 +12,7 @@
 # do the committees in a simple query
 /usr/bin/time psql -d us_geocoder -f ./geocode-committees.sql 
 
-# need updates for the transactions - takes too long
+# need grouped updates for the transactions - takes too long
 while [ `psql -q -d us_geocoder < count.sql` -gt 0 ]
 do
   time psql -d us_geocoder < batch-geocode-transactions.sql
