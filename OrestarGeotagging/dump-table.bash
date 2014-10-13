@@ -9,7 +9,12 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
-# dump the tables
-./dump-table.bash us_geocoder committee_addresses 5
-./dump-table.bash us_geocoder committee_geocodes 5
-./dump-table.bash us_geocoder raw_committee_transactions 5
+export DATABASE=${1}
+export TABLE=${2}
+export JOBS=${3}
+sudo mkdir -p /gisdata/pgdump
+sudo chown -R postgres:postgres /gisdata
+sudo rm -fr /gisdata/pgdump/${DATABASE}.${TABLE}.backup
+sudo su - postgres -c \
+  "time pg_dump -d ${DATABASE} -t ${TABLE} -E UTF8 -F d -j ${JOBS} -Z 9 -f /gisdata/pgdump/${DATABASE}.${TABLE}.backup"
+sudo chown -R ${USER}:${USER} /gisdata
