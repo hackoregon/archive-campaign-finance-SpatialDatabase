@@ -14,10 +14,10 @@ AND addr_line1 IS NOT NULL
 AND city IS NOT NULL
 AND state IS NOT NULL
 AND zip IS NOT NULL
-LIMIT 2000) AS a
+LIMIT 3000) AS a
 LEFT JOIN LATERAL
   geocode(concat_ws(' ', 
-    replace(a.addr_line1, '*', ''), 
+    replace(replace(a.addr_line1, '*', ''), '?', ''), 
     COALESCE(a.addr_line2, ' '),
     a.city, 
     a.state, 
