@@ -25,3 +25,6 @@ pushd ${OUT}
 zip -9m ${OUT}/VoterReg.zip \
   Addresses.csv
 popd
+
+# dump the schema
+./dump-schema.bash or_geocoder voter_reg 5
