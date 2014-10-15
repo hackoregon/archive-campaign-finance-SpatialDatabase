@@ -38,5 +38,12 @@ sudo su - postgres -c "psql -d us_geocoder -c \"DROP SCHEMA IF EXISTS http CASCA
 sudo su - postgres -c "bzip2 -dc ${DUMP} | psql -d us_geocoder"
 
 # make working copies of the input tables for geocoding
-psql -d us_geocoder < copy-raw-committees.sql
-psql -d us_geocoder < copy-raw-committee-transactions.sql
+export HERE=`pwd`
+sudo su - postgres -c \
+  "psql -d us_geocoder -f ${HERE}/copy-raw-committees.sql"
+sudo su - postgres -c \
+  "psql -d us_geocoder -f ${HERE}/copy-raw-committee-transactions.sql"
+sudo su - postgres -c \
+  "psql -d us_geocoder -c \"ALTER TABLE geocoded_committees OWNER TO ${USER};\""
+sudo su - postgres -c \
+  "psql -d us_geocoder -c \"ALTER TABLE geocoded_transactions OWNER TO ${USER};\""

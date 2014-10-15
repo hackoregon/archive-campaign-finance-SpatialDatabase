@@ -19,5 +19,4 @@ ALTER TABLE geocoded_transactions ADD COLUMN rating integer;
 ALTER TABLE geocoded_transactions ADD COLUMN lon double precision;
 ALTER TABLE geocoded_transactions ADD COLUMN lat double precision;
 ALTER TABLE geocoded_transactions ADD COLUMN srid text;
-ALTER TABLE geocoded_transactions OWNER TO ${USER};
 VACUUM ANALYZE geocoded_transactions;

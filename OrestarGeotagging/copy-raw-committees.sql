@@ -13,5 +13,4 @@ ALTER TABLE geocoded_committees ADD COLUMN rating integer;
 ALTER TABLE geocoded_committees ADD COLUMN lon double precision;
 ALTER TABLE geocoded_committees ADD COLUMN lat double precision;
 ALTER TABLE geocoded_committees ADD COLUMN srid text;
-ALTER TABLE geocoded_committees OWNER TO ${USER};
 VACUUM ANALYZE geocoded_committees;
