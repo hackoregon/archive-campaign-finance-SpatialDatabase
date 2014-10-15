@@ -10,11 +10,12 @@
 #
 
 export DATABASE=${1}
-export TABLE=${2}
-export JOBS=${3}
+export SCHEMA=${2}
+export TABLE=${3}
+export JOBS=${4}
 sudo mkdir -p /gisdata/pgdump
 sudo chown -R postgres:postgres /gisdata
-sudo rm -fr /gisdata/pgdump/${DATABASE}.${TABLE}.backup
+sudo rm -fr /gisdata/pgdump/${DATABASE}.${SCHEMA}.${TABLE}.backup
 sudo su - postgres -c \
-  "time pg_dump -d ${DATABASE} -t ${TABLE} -E UTF8 -F d -j ${JOBS} -Z 9 -f /gisdata/pgdump/${DATABASE}.${TABLE}.backup"
+  "/usr/bin/time pg_dump -d ${DATABASE} -t ${SCHEMA}.${TABLE} -E UTF8 -F d -j ${JOBS} -Z 9 -f /gisdata/pgdump/${DATABASE}.${SCHEMA}.${TABLE}.backup"
 sudo chown -R ${USER}:${USER} /gisdata
