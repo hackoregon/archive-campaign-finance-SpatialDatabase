@@ -9,6 +9,8 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+export DUMP=${1}
+
 # cleanup first
 for i in \
   ac_grass_roots_in_state \
@@ -33,7 +35,7 @@ done
 sudo su - postgres -c "psql -d us_geocoder -c \"DROP SCHEMA IF EXISTS http CASCADE;\""
 
 # restore the ORESTAR files - they go into 'public' schema by default
-sudo su - postgres -c "bzip2 -dc ${1} | psql -d us_geocoder"
+sudo su - postgres -c "bzip2 -dc ${DUMP} | psql -d us_geocoder"
 
 # make working copies of the input tables for geocoding
 psql -d us_geocoder < copy-raw-committees.sql
