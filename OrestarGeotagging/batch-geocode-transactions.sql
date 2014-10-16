@@ -1,9 +1,9 @@
 UPDATE geocoded_transactions
 SET
 (geomout, rating, srid) = (
-  ST_Transform((g).geomout, 4326),
+  (g).geomout,
   COALESCE((g).rating, 9999),
-  4326
+  4269
 )
 FROM (SELECT * FROM geocoded_transactions WHERE rating IS NULL LIMIT 1000) AS a
 LEFT JOIN LATERAL geocode(a.address, 1) AS g

@@ -1,9 +1,9 @@
 UPDATE geocoded_committees
 SET
 (geomout, rating, srid) = (
-  ST_Transform((g).geomout, 4326),
+  (g).geomout,
   COALESCE((g).rating, 9999),
-  4326  
+  4269  
 )
 FROM (SELECT * FROM geocoded_committees WHERE rating IS NULL) AS a
 LEFT JOIN LATERAL
