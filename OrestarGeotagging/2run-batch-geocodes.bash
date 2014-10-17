@@ -15,6 +15,12 @@
 # need grouped updates for the transactions - takes too long
 while [ `psql -q -d us_geocoder < count.sql` -gt 0 ]
 do
-  /usr/bin/time psql -d us_geocoder < batch-geocode-transactions.sql
+  time psql -d us_geocoder < bgt0.sql &
+  time psql -d us_geocoder < bgt1.sql &
+  time psql -d us_geocoder < bgt2.sql &
+  time psql -d us_geocoder < bgt3.sql &
+  time psql -d us_geocoder < bgt4.sql &
+  time psql -d us_geocoder < bgt5.sql &
+  wait
   psql -q -d us_geocoder < count.sql
 done
