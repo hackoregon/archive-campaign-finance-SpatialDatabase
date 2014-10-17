@@ -9,7 +9,18 @@
 # AGPL (http://www.gnu.org/licenses/agpl-3.0.txt) for more details.
 #
 
+export OUT=/gisdata # where the cleaned files live
+sudo mkdir -p ${OUT}
+sudo chown -R ${USER}:${USER} ${OUT}
+
+# dump the geocoded tables
+psql -d us_geocoder < dump-geocoded-addresses.sql
+pushd ${OUT}
+zip -9m ${OUT}/ORESTAR.zip \
+  CommitteeAddresses.csv \
+  CommitteeGeocodes.csv
+popd
+
 # dump the tables
-./dump-table.bash us_geocoder committee_addresses 5
-./dump-table.bash us_geocoder committee_geocodes 5
-./dump-table.bash us_geocoder raw_committee_transactions 5
+./dump-table.bash us_geocoder public committee_addresses 5
+./dump-table.bash us_geocoder public committee_geocodes 5
