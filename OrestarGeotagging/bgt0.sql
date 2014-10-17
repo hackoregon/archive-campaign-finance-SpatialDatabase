@@ -7,6 +7,7 @@ SET
 FROM (
   SELECT * FROM geocoded_transactions 
   WHERE rating IS NULL 
+  AND ztran_id % 6 = 0
   LIMIT 2500
 ) AS a
 LEFT JOIN LATERAL geocode(a.address, 1) AS g
