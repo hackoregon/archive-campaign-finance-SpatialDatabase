@@ -114,12 +114,8 @@ CREATE INDEX ON voter_reg.addresses (precinct_name);
 CREATE INDEX ON voter_reg.addresses (split);
 
 -- add columns for geocoder
-ALTER TABLE voter_reg.addresses ADD COLUMN addy norm_addy;
-ALTER TABLE voter_reg.addresses ADD COLUMN geomout geometry;
+ALTER TABLE voter_reg.addresses ADD COLUMN geojson text;
 ALTER TABLE voter_reg.addresses ADD COLUMN rating integer;
-ALTER TABLE voter_reg.addresses ADD COLUMN lon double precision;
-ALTER TABLE voter_reg.addresses ADD COLUMN lat double precision;
-ALTER TABLE voter_reg.addresses ADD COLUMN srid text;
 ALTER TABLE voter_reg.addresses ADD COLUMN addid serial NOT NULL PRIMARY KEY;
 
 -- drop unused columns
