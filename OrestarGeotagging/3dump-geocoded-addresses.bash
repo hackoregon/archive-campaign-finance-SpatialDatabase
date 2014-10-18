@@ -17,8 +17,8 @@ sudo chown -R ${USER}:${USER} ${OUT}
 psql -d us_geocoder < dump-geocoded-addresses.sql
 pushd ${OUT}
 zip -9m ${OUT}/ORESTAR.zip \
-  CommitteeAddresses.csv \
-  CommitteeGeocodes.csv
+  GeocodedCommittees.csv \
+  GeocodedTransactions.csv
 popd
 
 # dump the tables

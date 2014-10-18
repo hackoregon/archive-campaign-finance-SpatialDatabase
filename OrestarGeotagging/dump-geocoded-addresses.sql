@@ -1,3 +1,4 @@
-\copy (select * from committee_addresses) to '/gisdata/CommitteeAddresses.csv' (format csv, header);
-\copy (select * from committee_geocodes) to '/gisdata/CommitteeGeocodes.csv' (format csv, header);
-\copy (select * from raw_committee_transactions) to '/gisdata/RawCommitteeTransactions.csv' (format csv, header);
+CREATE INDEX ON geocoded_committees (geom);
+CREATE INDEX ON geocoded_transactions (geom);
+\copy (select * from geocoded_committees) to '/gisdata/GeocodedCommittees.csv' (format csv, header);
+\copy (select * from geocoded_transactions) to '/gisdata/GeocodedTransactions.csv' (format csv, header);
