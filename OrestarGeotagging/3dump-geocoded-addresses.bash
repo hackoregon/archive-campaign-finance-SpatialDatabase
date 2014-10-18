@@ -22,5 +22,5 @@ zip -9m ${OUT}/ORESTAR.zip \
 popd
 
 # dump the tables
-./dump-table.bash us_geocoder public committee_addresses 5
-./dump-table.bash us_geocoder public committee_geocodes 5
+./dump-table.bash us_geocoder public geocoded_committees 5
+./dump-table.bash us_geocoder public geocoded_transactions 5
