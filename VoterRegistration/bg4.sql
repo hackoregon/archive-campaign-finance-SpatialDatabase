@@ -1,6 +1,6 @@
 UPDATE voter_reg.addresses
 SET
-(geojson, rating) = (ST_As_GeoJSON((g).geomout), COALESCE((g).rating, 9999))
+(geojson, rating) = (ST_AsGeoJSON((g).geomout), COALESCE((g).rating, 9999))
 FROM (
   SELECT * FROM voter_reg.addresses
   WHERE rating IS NULL
