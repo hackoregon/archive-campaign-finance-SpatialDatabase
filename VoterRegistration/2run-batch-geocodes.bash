@@ -11,6 +11,12 @@
 
 while [ `psql -q -d or_geocoder < count.sql` -gt 0 ]
 do
-  time psql -d or_geocoder < batch-geocode.sql
+  time psql -d or_geocoder < bg0.sql &
+  time psql -d or_geocoder < bg1.sql &
+  time psql -d or_geocoder < bg2.sql &
+  time psql -d or_geocoder < bg3.sql &
+  time psql -d or_geocoder < bg4.sql &
+  time psql -d or_geocoder < bg5.sql &
+  wait
   psql -q -d or_geocoder < count.sql
 done
