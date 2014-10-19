@@ -114,6 +114,7 @@ CREATE INDEX ON voter_reg.addresses (precinct_name);
 CREATE INDEX ON voter_reg.addresses (split);
 
 -- add columns for geocoder
+ALTER TABLE voter_reg.addresses ADD COLUMN geom geometry;
 ALTER TABLE voter_reg.addresses ADD COLUMN geojson text;
 ALTER TABLE voter_reg.addresses ADD COLUMN rating integer;
 ALTER TABLE voter_reg.addresses ADD COLUMN addid serial NOT NULL PRIMARY KEY;
