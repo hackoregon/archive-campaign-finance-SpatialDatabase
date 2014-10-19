@@ -1,7 +1,6 @@
 UPDATE geocoded_transactions
 SET
-(addy, geom, geojson, rating) = (
-  (g).addy,
+(geom, geojson, rating) = (
   (g).geomout,
   ST_AsGeoJSON((g).geomout),
   COALESCE((g).rating, 9999)
